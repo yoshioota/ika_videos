@@ -1,0 +1,13 @@
+h1 Listing Playlists
+
+table.table
+  thead
+    tr
+      th Title
+      th Videos
+
+  tbody
+    - @playlists.each do |playlist|
+      tr
+        td = link_to playlist.title, playlist
+        td = playlist.playlists_videos_count

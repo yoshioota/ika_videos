@@ -1,0 +1,52 @@
+doctype html
+html
+  head
+    title
+      = content_for?(:title) ? yield(:title) + ' - ' : ''
+      | Ika Videos
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    = csrf_meta_tags
+    meta name='viewport' content='width=device-width, initial-scale=1'
+
+  body*{class: controller_action_class_name}
+    nav.navbar.navbar-default.navbar-static-top role="navigation"
+      .container-fluid
+        .navbar-header
+          button.navbar-toggle.collapsed data-target="#top-navbar" data-toggle="collapse" type="button"
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+
+          = link_to 'Ika Videos', '/', class: 'navbar-brand'
+
+        #top-navbar.navbar-collapse.collapse
+          ul.nav.navbar-nav
+            li*{class: (%r|/captures| === request.path ? 'active' : '')}
+              = link_to captures_path do
+                |Captures
+            li*{class: (%r|/playlists| === request.path ? 'active' : '')}
+              = link_to playlists_path do
+                |Playlists
+            li*{class: (%r|/videos| === request.path ? 'active' : '')}
+              = link_to videos_path do
+                |Videos
+          ul.nav.navbar-right
+            li
+              = link_to edit_credential_path do
+                = fa_icon 'gear 2x'
+
+    .container
+      = render 'breadcrumbs'
+
+    .container
+      .row
+        .col-xs-12.js-alert-area
+          - if flash.present?
+            - devise_alert_mapping = {'alert' => :danger, 'notice' => :info}
+            - flash.each do |type, msg|
+              - alert_type = type.in?(devise_alert_mapping.keys) ? devise_alert_mapping[type] : type
+              = render 'alert_check', alert_type: alert_type, msg: msg
+
+    div*{class: content_for?(:container) ? yield(:container) : 'container-fluid'}
+      = yield

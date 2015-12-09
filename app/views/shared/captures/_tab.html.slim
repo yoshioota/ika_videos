@@ -1,0 +1,5 @@
+= link_to 'Frames', capture_frames_path(@capture), class: 'btn btn-default btn-sm'
+'&nbsp;|&nbsp;
+= link_to 'Markers', capture_markers_path(@capture), class: 'btn btn-default btn-sm'
+'&nbsp;|&nbsp;
+= link_to 'Videos', videos_path(capture_id: @capture.id), class: 'btn btn-default btn-sm'

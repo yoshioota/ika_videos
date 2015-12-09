@@ -1,0 +1,8 @@
+- if @capture
+  = render 'shared/captures/show', capture: @capture
+  = render 'shared/captures/tab'
+
+h1 Listing Videos
+
+.videos
+  = render 'videos/videos', videos: @videos

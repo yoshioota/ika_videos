@@ -1,0 +1,24 @@
+defaults: &defaults
+  capture_path: <%= File.expand_path('~/Movies/Game Capture HD Library/') %>
+  output_path: <%= File.expand_path('~/ika/') %>
+  concurrency: <%= c = Parallel.processor_count - 1; c < 1 ? 1 : c %>
+  default_scale: 7
+  create_youtube_playlist_dates: 3
+
+  # Elgatoのディレクトリも消すかどうか
+  # ただしElgatoアプリが起動中の場合に削除すると,Elgatoのアプリを終了した際jsonが作られてしまう。
+  delete_capture_dir: true
+
+  # 抽出したビデオファイルを消すか
+  delete_video_file: false
+
+  playlist_check_seconds: 10
+
+development:
+  <<: *defaults
+
+test:
+  <<: *defaults
+
+production:
+  <<: *defaults

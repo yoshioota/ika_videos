@@ -1,0 +1,4 @@
+if(capture_update_hash != '<%= Capture.update_hash %>') {
+  $('.captures').html("<%= j render('captures/captures', captures: @captures) %>");
+  capture_update_hash = '<%= Capture.update_hash %>';
+}

@@ -1,0 +1,74 @@
+table.table.table-condensed.table-bordered.table-striped
+  thead
+    tr
+      th = check_box_tag 'ids[]', nil, false, class: 'change-all-checkboxes', data: {target: '.capture-item'}
+      th ID
+      th Path
+      th Duration
+      th Total Frames
+      th Size
+      th Start End Time
+      th Frame images
+      th Markers
+      th Videos
+      th Local
+      th Exist
+
+  tbody
+    - captures.each do |capture|
+      tr
+        td
+          = check_box_tag 'ids[]', capture.id, false, class: 'capture-item'
+        td
+          = capture.id
+        td
+          .clearfix
+            = link_to capture_frames_path(capture)
+              = image_tag img_capture_frame_path(capture, 0), width: 160, height: 90
+          .pull-left
+            = link_to capture_frames_path(capture)
+              = capture.full_path.gsub(Settings.capture_path, '')
+          .pull-left
+            = link_to 'Open', open_capture_capture_path(capture), method: :post, remote: true, class: 'btn btn-default btn-sm'
+            = link_to execute_all_capture_path(capture), method: :post, remote: true, class: 'btn btn-default btn-sm' do
+              = fa_icon 'repeat'
+        td.text-right
+          = capture.duration
+        td.text-right
+          = check_start_end(capture, :compute_total_frames, finished: :invisible)
+          = number_with_delimiter capture.total_frames
+          = link_to calculate_total_frames_capture_path(capture), method: :post, remote: true, class: 'btn btn-default btn-sm' do
+            = fa_icon 'repeat'
+        td.text-right
+          = number_to_human_size capture.file_size
+        td
+          div = time_fmt capture.started_at
+          div = time_fmt capture.ended_at
+        td.text-right
+          = check_start_end(capture, :create_thumbnails)
+          |&nbsp;
+          = link_to create_files_capture_frames_path(capture), method: :post, remote: true, class: 'btn btn-default btn-sm'
+            = fa_icon 'repeat'
+        td.text-right
+          = check_start_end(capture, :create_markers, finished: :invisible)
+          = link_to capture.markers_count, capture_markers_path(capture)
+          - if capture.create_thumbnails_ended_at && capture.create_thumbnails_started_at
+            |&nbsp;
+            = link_to create_markers_capture_markers_path(capture), method: :post, remote: true, class: 'btn btn-default btn-sm'
+             = fa_icon 'repeat'
+        td.text-right
+          = check_start_end(capture, :analyze_videos, finished: :invisible)
+          = link_to capture.videos_count, videos_path(capture_id: capture.id)
+          - if exist_markers?(capture)
+            |&nbsp;
+            = link_to create_games_capture_markers_path(capture), method: :post, remote: true, class: 'btn btn-default btn-sm'
+             = fa_icon 'repeat'
+        td.text-right
+          - if valid_videos?(capture)
+            = link_to videos_path(capture_id: capture.id) do
+              = capture.videos.to_a.count{|video| File.exist?(video.output_file_path) }
+            = link_to create_games_capture_markers_path(capture), method: :post, remote: true, class: 'btn btn-default btn-sm'
+              = fa_icon 'repeat'
+            = link_to 'Open', open_videos_capture_path(capture), method: :post, remote: true, class: 'btn btn-default btn-sm'
+        td
+          = capture.exist

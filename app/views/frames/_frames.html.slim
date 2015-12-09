@@ -1,0 +1,12 @@
+- frames.each do |_frame|
+  - hour = _frame[:hour]
+  - min = _frame[:min]
+  - sec = _frame[:sec]
+  - frame = _frame[:frame]
+  - total_frame = _frame[:total_frame]
+  div style='display: inline-block;'
+    div
+      = link_to capture_frame_path(capture, id: total_frame)
+        = image_tag img_capture_frame_path(capture_id: capture.id, id: total_frame)
+    div
+      |#{'%02d' % hour}:#{'%02d' % min}:#{'%02d' % sec}.#{'%02d' % frame} (#{number_with_delimiter total_frame})

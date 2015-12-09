@@ -1,0 +1,23 @@
+div
+  strong Local:
+  = link_to 'Open All', open_videos_playlist_path(@playlist), method: :post, remote: true, class: 'btn btn-default btn-sm'
+  = link_to 'Reorder Playlist Item', reorder_playlist_path(@playlist), remote: true, method: :post, class: 'btn btn-default btn-sm'
+  = link_to 'Reveal in Finder', reveal_in_finder_playlist_path(@playlist), remote: true, method: :post, class: 'btn btn-default btn-sm'
+  = link_to 'Upload Youtube', upload_youtube_playlist_path(@playlist), method: :post, remote: true, class: 'btn btn-default btn-sm'
+  = link_to 'Delete Movie Files', delete_movie_files_playlist_path(@playlist), remote: true, method: :post, class: 'btn btn-default btn-sm'
+  |&nbsp;
+  strong Youtube:
+  = link_to_if @playlist.youtube_url, 'Open Playlist', @playlist.youtube_url, class: 'btn btn-default btn-sm', target: :_blank
+  = link_to 'Add Playlist Items', add_playlist_youtube_playlist_path(@playlist), method: :post, remote: true, class: 'btn btn-default btn-sm'
+
+h1
+  = @playlist.date_on
+
+= form_tag playlist_path(@playlist), method: :get, remote: true, class: 'playlist-form'
+  div
+    label
+      = check_box_tag 'show_img', 1, @show_img == 1, class: 'submit-if-changed'
+      |サムネイル表示
+
+.playlist-items
+  = render 'playlists/playlist_items', playlists_videos: @playlists_videos

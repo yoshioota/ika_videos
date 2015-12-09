@@ -1,0 +1,28 @@
+table.table
+  thead
+    tr
+      th ID
+      th File Name
+      th Duration
+      th Local
+      th Youtube ID
+      th
+      th
+
+  tbody
+    - videos.each do |video|
+      tr
+        td
+          = video.id
+        td
+          = video.file_name
+        td
+          = TimeUtil.total_seconds_to_str video.ended_at.to_i - video.started_at.to_i
+        td
+          = link_to_if video.exist_local?, 'Local', open_video_path(video), method: :post, remote: true
+        td
+          = link_to_if video.youtube_id, video.youtube_id, "https://www.youtube.com/watch?v=#{video.youtube_id}", target: :_blank
+        td
+          = link_to_if video.exist_local? && video.youtube_id.nil?, 'Upload', upload_youtube_video_path(video), method: :post
+        td
+          = link_to 'Destroy', video, data: {:confirm => 'Are you sure?'}, :method => :delete, remote: true

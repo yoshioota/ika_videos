@@ -1,0 +1,75 @@
+create_table :captures do |t|
+  t.string :title
+  t.integer :total_frames, limit: 8
+  t.string :duration
+  t.string :full_path
+  t.boolean :exist
+  t.datetime :started_at
+  t.datetime :ended_at
+  %w(compute_total_frames create_thumbnails create_markers analyze_videos).each do |column|
+    t.datetime :"#{column}_started_at"
+    t.datetime :"#{column}_ended_at"
+  end
+  t.integer :markers_count, default: 0
+  t.integer :videos_count, default: 0
+  t.boolean :visible, default: true # 削除に時間がかかるので一旦非表示にする
+  t.timestamps null: false
+end
+
+add_index :captures, :updated_at
+
+create_table :markers do |t|
+  t.integer :capture_id, null: false
+  t.integer :total_frame, limit: 8, null: false
+  t.string :marker_type, null: false
+  t.string :description
+  t.decimal :min_score, precision: 21, scale: 1, null: false
+  t.decimal :max_score, precision: 21, scale: 1, null: false
+  t.integer :min_point_x
+  t.integer :min_point_y
+  t.integer :max_point_x
+  t.integer :max_point_y
+  t.timestamps null: false
+end
+
+add_index :markers, :capture_id
+add_index :markers, :total_frame
+add_index :markers, :marker_type
+
+create_table :videos do |t|
+  t.integer :capture_id
+  t.integer :total_frames
+  t.integer :start_frame
+  t.integer :end_frame
+  t.string :youtube_id
+  t.datetime :started_at
+  t.datetime :ended_at
+  t.string :file_name
+  t.timestamps null: false
+end
+
+add_index :videos, :capture_id
+
+create_table :playlists do |t|
+  t.string :youtube_id
+  t.string :title
+  t.date :date_on
+  t.integer :playlists_videos_count, default: 0
+  t.timestamps null: false
+end
+
+create_table :playlists_videos do |t|
+  t.string :youtube_id
+  t.integer :playlist_id, null: false
+  t.integer :video_id, null: false
+  t.integer :order_no, default: 9999
+  t.timestamps null: false
+end
+
+add_index :playlists_videos, [:playlist_id, :video_id, :order_no], name: 'idx1'
+
+create_table :credentials do |t|
+  t.string :client_id
+  t.string :client_secret
+  t.timestamps null: false
+end

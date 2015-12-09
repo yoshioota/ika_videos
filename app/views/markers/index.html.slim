@@ -1,0 +1,19 @@
+= render 'shared/captures/show', capture: @capture
+= render 'shared/captures/tab'
+
+h1 Listing markers
+
+table.table
+  tr
+    th total_frame
+    th total_time
+    th marker_type
+    th min
+    th max
+  - @capture.markers.order(:total_frame).each do |marker|
+    tr
+      td = marker.total_frame
+      td = TimeUtil.total_frame_to_str(marker.total_frame)
+      td = marker.marker_type
+      td = marker.min_score.to_s
+      td = marker.max_score.to_s

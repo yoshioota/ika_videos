@@ -1,0 +1,30 @@
+= render 'shared/captures/show', capture: @capture
+= render 'shared/captures/tab'
+
+h1 Listing frames
+
+= form_tag search_capture_frames_path(@capture), method: :get, remote: true do
+  div
+    span
+      |Min:
+      = select_tag 'min', options_for_select((0..@capture.total_min).to_a, @min), class: 'submit-if-changed'
+      |&nbsp;
+    span
+      |Sec:
+      = select_tag 'sec', options_for_select((0..60).to_a, @sec), class: 'submit-if-changed'
+      |&nbsp;
+    span
+      |Step:
+      - steps = {'1frame': 1, '0.1sec': 6, '0.5sec': 30, '1sec': 60, '2sec': 120, '1min': 3600}
+      = select_tag 'step', options_for_select(steps, @step), class: 'submit-if-changed'
+      |&nbsp;
+    span
+      |Limit:
+      - limits = [10, 50, 100, 1000, 3600]
+      = select_tag 'limit', options_for_select(limits, @limit), class: 'submit-if-changed'
+
+  div
+    = submit_tag '検索', class: 'btn btn-default'
+
+.frames
+  = render 'frames/frames', capture: @capture, frames: @frames

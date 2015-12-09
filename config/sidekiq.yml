@@ -1,0 +1,26 @@
+---
+:concurrency: 5
+
+# ERROR -- : Couldn't cleanly terminate all actors in 10 seconds! が出まくるのでそれの対応
+# http://stackoverflow.com/questions/26006496/sidekiq-does-not-generate-sidekiq-pid-file-on-heroku-using-with-redistogo
+#:pidfile: tmp/pids/sidekiq.pid
+
+staging:
+  :concurrency: 10
+production:
+  :concurrency: 20
+:queues:
+  - default
+  - check_capture_dir
+  - create_frame_files
+  - create_markers
+  - create_videos
+  - extract_video_files
+  - execute_all
+  - upload_youtube
+:limits:
+  check_capture_dir: 1
+  execute_all: 1
+  create_markers: 1
+  upload_youtube: 1
+  extract_video_files: 1

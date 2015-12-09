@@ -1,0 +1,6 @@
+ja:
+  activerecord:
+    attributes:
+      credential:
+        client_id: Youtube Client ID
+        client_secret: Youtube Client Secret
