@@ -22,6 +22,7 @@ class CapturesController < ApplicationController
   end
 
   def bulk_destroy
+    fail if params[:ids].blank?
     Capture.where(id: params[:ids]).update_all(visible: false, updated_at: Time.now)
     params[:ids].each do |capture_id|
       DeleteCaptureAndCachesWorker.perform_async(capture_id)
