@@ -36,6 +36,7 @@ gem 'bootstrap_form'
 gem 'font-awesome-rails'
 
 gem 'toastr-rails'
+gem 'uri-js-rails'
 
 gem 'awesome_print'
 
