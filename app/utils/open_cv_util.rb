@@ -5,39 +5,40 @@ class OpenCvUtil
   WHITE_IMAGE_PATH  = Rails.root.join("data/#{Settings.default_scale}-white.jpeg").to_s
   FINISH_IMAGE_PATH = Rails.root.join("data/#{Settings.default_scale}-finish.jpeg").to_s
 
-  THRESHOLD = 10_000_000
+  BLACK_IMAGE = OpenCV::IplImage.load(BLACK_IMAGE_PATH, OpenCV::CV_LOAD_IMAGE_GRAYSCALE)
+  WHITE_IMAGE = OpenCV::IplImage.load(WHITE_IMAGE_PATH, OpenCV::CV_LOAD_IMAGE_GRAYSCALE)
+  FINISH_IMAGE = OpenCV::IplImage.load(FINISH_IMAGE_PATH, OpenCV::CV_LOAD_IMAGE_GRAYSCALE)
+                     .threshold(0, 255, OpenCV::CV_THRESH_BINARY | OpenCV::CV_THRESH_OTSU)[0]
 
-  def black?(file_path)
-    check(BLACK_IMAGE_PATH, file_path, OpenCV::CV_LOAD_IMAGE_GRAYSCALE)
+  BLACK_WHITE_THRESHOLD = 10_000_000
+  FINISH_THRESHOLD      = 50_000_000
+
+  def initialize(file_path)
+    @gs_frame_image = OpenCV::IplImage.load(file_path, OpenCV::CV_LOAD_IMAGE_GRAYSCALE)
+    @bw_frame_image = @gs_frame_image.threshold(0, 255, OpenCV::CV_THRESH_BINARY | OpenCV::CV_THRESH_OTSU)[0]
   end
 
-  def white?(file_path)
-    check(WHITE_IMAGE_PATH, file_path, OpenCV::CV_LOAD_IMAGE_GRAYSCALE)
+  def black?
+    bw_check(BLACK_IMAGE)
+  end
+
+  def white?
+    bw_check(WHITE_IMAGE)
   end
 
   # MEMO: Finish画面の誤差が大きすぎるので別実装
-  def finish?(file_path)
-    score_threshold = 50_000_000
-
-    template = load_black_white(FINISH_IMAGE_PATH)
-    image = load_black_white(file_path)
-
-    result = image.match_template(template, OpenCV::CV_TM_SQDIFF)
-    hash = Hash[%w{min_score max_score min_point max_point}.zip(result.min_max_loc)].with_indifferent_access
-    hash[:min_score] <= score_threshold && hash[:max_score] <= score_threshold ? hash : nil
+  def finish?
+    result = @bw_frame_image.match_template(FINISH_IMAGE, OpenCV::CV_TM_SQDIFF)
+    hash = min_max_loc_to_hash(result.min_max_loc)
+    hash[:min_score] <= FINISH_THRESHOLD && hash[:max_score] <= FINISH_THRESHOLD ? hash : nil
   end
 
-  def check(template_path, file_path, iscolor = OpenCV::CV_LOAD_IMAGE_COLOR, score_threshold = THRESHOLD)
-    arr = min_max(template_path, file_path, iscolor)
-    hash = Hash[%w{min_score max_score min_point max_point}.zip(arr)].with_indifferent_access
-    hash[:min_score] <= score_threshold && hash[:max_score] <= score_threshold ? hash : nil
-  end
+  private
 
-  def min_max(template_path, file_path, iscolor = OpenCV::CV_LOAD_IMAGE_COLOR, method = OpenCV::CV_TM_SQDIFF)
-    template = OpenCV::IplImage.load(template_path, iscolor)
-    image = OpenCV::IplImage.load(file_path, iscolor)
-    result = image.match_template(template, method)
-    result.min_max_loc
+  def bw_check(template)
+    result = @gs_frame_image.match_template(template, OpenCV::CV_TM_SQDIFF)
+    hash = min_max_loc_to_hash(result.min_max_loc)
+    hash[:min_score] <= BLACK_WHITE_THRESHOLD && hash[:max_score] <= BLACK_WHITE_THRESHOLD ? hash : nil
   end
 
   # MEMO: グレースケール化 -> 2値化
@@ -46,5 +47,9 @@ class OpenCvUtil
     OpenCV::IplImage
         .load(path, OpenCV::CV_LOAD_IMAGE_GRAYSCALE)
         .threshold(0, 255, OpenCV::CV_THRESH_BINARY | OpenCV::CV_THRESH_OTSU)[0]
+  end
+
+  def min_max_loc_to_hash(min_max_loc)
+    Hash[%i{min_score max_score min_point max_point}.zip(min_max_loc)]
   end
 end

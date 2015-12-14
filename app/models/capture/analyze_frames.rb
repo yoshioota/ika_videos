@@ -43,9 +43,12 @@ class Capture::AnalyzeFrames
 
   def analyze(image_file_path)
     ret = {}
-    ret[:black] = OpenCvUtil.new.black?(image_file_path)
-    ret[:white] = OpenCvUtil.new.white?(image_file_path)
-    ret[:finish] = OpenCvUtil.new.finish?(image_file_path)
+    start = Time.now
+    ocu = OpenCvUtil.new(image_file_path)
+    ret[:black] = ocu.black?
+    ret[:white] = ocu.white?
+    ret[:finish] = ocu.finish?
+    puts "#{'%.2f' % ((Time.now - start).to_f * 1000)} ms" if @verbose
     ret
   end
 end
