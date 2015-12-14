@@ -3,7 +3,7 @@ javascript:
 
 h1 Listing Captures
 
-= form_tag bulk_destroy_captures_path, method: :delete, remote: true, class: 'capture-form'
+= form_tag bulk_destroy_captures_path, method: :delete, remote: true, id: 'capture-form'
   .pull-right
     = submit_tag '削除', class: 'btn btn-default'
   .captures

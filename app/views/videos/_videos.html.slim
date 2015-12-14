@@ -25,4 +25,4 @@ table.table
         td
           = link_to_if video.exist_local? && video.youtube_id.nil?, 'Upload', upload_youtube_video_path(video), method: :post
         td
-          = link_to 'Destroy', video, data: {:confirm => 'Are you sure?'}, :method => :delete, remote: true
+          = link_to 'Destroy', video_path(video, capture_id: params[:capture_id]), data: {:confirm => 'Are you sure?'}, :method => :delete, remote: true
