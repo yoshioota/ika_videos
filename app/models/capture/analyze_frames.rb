@@ -44,7 +44,7 @@ class Capture::AnalyzeFrames
   def analyze(image_file_path)
     ret = {}
     start = Time.now
-    ocu = OpenCvUtil.new(image_file_path)
+    ocu = Splatoon::AnalyzeFrame.new(image_file_path)
     ret[:black] = ocu.black?
     ret[:white] = ocu.white?
     ret[:finish] = ocu.finish?

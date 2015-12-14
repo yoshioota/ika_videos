@@ -1,6 +1,5 @@
-class OpenCvUtil
+class Splatoon::AnalyzeFrame
 
-  # Elgato の extended を設定するとカラーレンジが狭まるのでそれ用のファイルも追加
   BLACK_IMAGE_PATH  = Rails.root.join("data/#{Settings.default_scale}-black.jpeg").to_s
   WHITE_IMAGE_PATH  = Rails.root.join("data/#{Settings.default_scale}-white.jpeg").to_s
   FINISH_IMAGE_PATH = Rails.root.join("data/#{Settings.default_scale}-finish.jpeg").to_s
