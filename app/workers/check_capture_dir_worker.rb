@@ -34,7 +34,7 @@ class CheckCaptureDirWorker
     capture.title = File.basename(full_path)
     metadata = FfmpegUtil.get_metadata(full_path)
     capture.duration = metadata[:duration]
-    capture.ended_at = metadata[:creation_time]
+    capture.ended_at = metadata[:creation_time] || Time.now
     capture.exist = true
     capture.save!
     capture
