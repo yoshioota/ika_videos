@@ -42,12 +42,8 @@ class Capture::AnalyzeFrames
   end
 
   def analyze(image_file_path)
-    ret = {}
     start = Time.now
-    ocu = Splatoon::AnalyzeFrame.new(image_file_path)
-    ret[:black] = ocu.black?
-    ret[:white] = ocu.white?
-    ret[:finish] = ocu.finish?
+    ret = Splatoon::AnalyzeFrame.new(image_file_path).analyze
     puts "#{'%.2f' % ((Time.now - start).to_f * 1000)} ms" if @verbose
     ret
   end

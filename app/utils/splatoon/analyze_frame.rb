@@ -1,20 +1,34 @@
 class Splatoon::AnalyzeFrame
 
-  BLACK_IMAGE_PATH  = Rails.root.join("data/#{Settings.default_scale}-black.jpeg").to_s
-  WHITE_IMAGE_PATH  = Rails.root.join("data/#{Settings.default_scale}-white.jpeg").to_s
-  FINISH_IMAGE_PATH = Rails.root.join("data/#{Settings.default_scale}-finish.jpeg").to_s
+  BLACK_IMAGE_PATH  = Rails.root.join("data/7-black.jpeg").to_s
+  WHITE_IMAGE_PATH  = Rails.root.join("data/7-white.jpeg").to_s
+  FINISH_IMAGE_PATH = Rails.root.join("data/7-finish.jpeg").to_s
 
   BLACK_IMAGE = OpenCV::IplImage.load(BLACK_IMAGE_PATH, OpenCV::CV_LOAD_IMAGE_GRAYSCALE)
   WHITE_IMAGE = OpenCV::IplImage.load(WHITE_IMAGE_PATH, OpenCV::CV_LOAD_IMAGE_GRAYSCALE)
   FINISH_IMAGE = OpenCV::IplImage.load(FINISH_IMAGE_PATH, OpenCV::CV_LOAD_IMAGE_GRAYSCALE)
                      .threshold(0, 255, OpenCV::CV_THRESH_BINARY | OpenCV::CV_THRESH_OTSU)[0]
 
-  BLACK_WHITE_THRESHOLD = 10_000_000
+  NEW_SIZE = OpenCV::CvSize.new(1280 / Settings.default_scale, 720 / Settings.default_scale)
+  BLACK_IMAGE = BLACK_IMAGE.resize(NEW_SIZE)
+  WHITE_IMAGE = WHITE_IMAGE.resize(NEW_SIZE)
+  FINISH_IMAGE = FINISH_IMAGE.resize(NEW_SIZE)
+
+  # BLACK_WHITE_THRESHOLD = 10_000_000
+  BLACK_WHITE_THRESHOLD = 100
   FINISH_THRESHOLD      = 50_000_000
 
   def initialize(file_path)
-    @gs_frame_image = OpenCV::IplImage.load(file_path, OpenCV::CV_LOAD_IMAGE_GRAYSCALE)
-    @bw_frame_image = @gs_frame_image.threshold(0, 255, OpenCV::CV_THRESH_BINARY | OpenCV::CV_THRESH_OTSU)[0]
+    @gs_frame_image = OpenCV::IplImage.load(file_path, OpenCV::CV_LOAD_IMAGE_GRAYSCALE).resize(NEW_SIZE)
+    @bw_frame_image = @gs_frame_image.threshold(0, 255, OpenCV::CV_THRESH_BINARY | OpenCV::CV_THRESH_OTSU)[0].resize(NEW_SIZE)
+  end
+
+  def analyze
+    ret = {black: false, white: false, finish: false}
+    return ret if ret[:black] = black?
+    return ret if ret[:white] = white?
+    return ret if ret[:finish] = finish?
+    ret
   end
 
   def black?

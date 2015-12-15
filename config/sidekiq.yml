@@ -21,6 +21,7 @@ production:
 :limits:
   check_capture_dir: 1
   execute_all: 1
+  create_frame_files: 1
   create_markers: 1
   upload_youtube: 1
   extract_video_files: 1
