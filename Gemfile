@@ -61,3 +61,20 @@ group :development do
 end
 
 gem 'bullet', group: 'development'
+
+group :development do
+  gem 'rails-erd'
+  gem 'annotate'
+end
+
+## テスト系
+group :development, :test do
+  gem 'rspec-rails'
+  gem 'factory_girl_rails'
+  gem 'database_rewinder'
+end
+
+group :development do
+  gem 'guard-rspec', require: false
+  gem 'guard-livereload', require: false
+end
