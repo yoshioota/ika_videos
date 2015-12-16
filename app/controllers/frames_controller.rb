@@ -10,15 +10,10 @@ class FramesController < ApplicationController
   end
 
   def img
-    unless File.exist?(@capture.get_frame_image_file_path_total_frame(params[:id].to_i))
-      send_file(
-          Rails.root.join('data/no-image.jpg'), # FIXME: assets/images/に入れようとしたけどうまくいかなかったので一旦dataへ入れる。
-          disposition: 'inline')
-    else
-      send_file(
-          @capture.get_frame_image_file_path_total_frame(params[:id].to_i),
-          disposition: 'inline')
-    end
+    path = File.exist?(@capture.get_frame_image_file_path_total_frame(params[:id].to_i)) ?
+        @capture.get_frame_image_file_path_total_frame(params[:id].to_i) :
+        Rails.root.join('data/no-image.jpg').to_s # FIXME: assets/images/に入れようとしたけどうまくいかなかったので一旦dataへ入れる。
+    send_file(path, disposition: 'inline')
   end
 
   def create_files
