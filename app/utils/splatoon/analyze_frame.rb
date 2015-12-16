@@ -1,30 +1,28 @@
 class Splatoon::AnalyzeFrame
+  include OpenCV
 
   BLACK_IMAGE_PATH  = Rails.root.join("data/7-black.jpeg").to_s
   WHITE_IMAGE_PATH  = Rails.root.join("data/7-white.jpeg").to_s
-  FINISH_IMAGE_PATH = Rails.root.join("data/7-finish.jpeg").to_s
+  FINISH_IMAGE_PATH = Rails.root.join("data/4-finish.jpeg").to_s
 
-  BLACK_IMAGE = OpenCV::IplImage.load(BLACK_IMAGE_PATH, OpenCV::CV_LOAD_IMAGE_GRAYSCALE)
-  WHITE_IMAGE = OpenCV::IplImage.load(WHITE_IMAGE_PATH, OpenCV::CV_LOAD_IMAGE_GRAYSCALE)
-  FINISH_IMAGE = OpenCV::IplImage.load(FINISH_IMAGE_PATH, OpenCV::CV_LOAD_IMAGE_GRAYSCALE)
-                     .threshold(0, 255, OpenCV::CV_THRESH_BINARY | OpenCV::CV_THRESH_OTSU)[0]
+  NEW_SIZE = CvSize.new(1280 / Settings.default_scale, 720 / Settings.default_scale)
 
-  NEW_SIZE = OpenCV::CvSize.new(1280 / Settings.default_scale, 720 / Settings.default_scale)
-  BLACK_IMAGE = BLACK_IMAGE.resize(NEW_SIZE)
-  WHITE_IMAGE = WHITE_IMAGE.resize(NEW_SIZE)
-  FINISH_IMAGE = FINISH_IMAGE.resize(NEW_SIZE)
+  BLACK_IMAGE  = IplImage.load(BLACK_IMAGE_PATH, CV_LOAD_IMAGE_GRAYSCALE).resize(NEW_SIZE)
+  WHITE_IMAGE  = IplImage.load(WHITE_IMAGE_PATH, CV_LOAD_IMAGE_GRAYSCALE).resize(NEW_SIZE)
+  FINISH_IMAGE = IplImage.load(FINISH_IMAGE_PATH, CV_LOAD_IMAGE_GRAYSCALE)
+                     .threshold(0, 255, CV_THRESH_BINARY | CV_THRESH_OTSU)[0].resize(NEW_SIZE)
 
-  # BLACK_WHITE_THRESHOLD = 10_000_000
-  BLACK_WHITE_THRESHOLD = 100
+  BLACK_WHITE_THRESHOLD = 10_000_000
   FINISH_THRESHOLD      = 50_000_000
 
   def initialize(file_path)
-    @gs_frame_image = OpenCV::IplImage.load(file_path, OpenCV::CV_LOAD_IMAGE_GRAYSCALE).resize(NEW_SIZE)
-    @bw_frame_image = @gs_frame_image.threshold(0, 255, OpenCV::CV_THRESH_BINARY | OpenCV::CV_THRESH_OTSU)[0].resize(NEW_SIZE)
+    fail file_path.to_s unless File.file?(file_path)
+    @tgt_gray_image = IplImage.load(file_path, CV_LOAD_IMAGE_GRAYSCALE).resize(NEW_SIZE)
+    @tgt_otsu_image = OpencvUtil.to_otsu(@tgt_gray_image)
   end
 
   def analyze
-    ret = {black: false, white: false, finish: false}
+    ret = {black: nil, white: nil, finish: nil}
     return ret if ret[:black] = black?
     return ret if ret[:white] = white?
     return ret if ret[:finish] = finish?
@@ -41,25 +39,17 @@ class Splatoon::AnalyzeFrame
 
   # MEMO: Finish画面の誤差が大きすぎるので別実装
   def finish?
-    result = @bw_frame_image.match_template(FINISH_IMAGE, OpenCV::CV_TM_SQDIFF)
+    result = FINISH_IMAGE.match_template(@tgt_otsu_image, CV_TM_SQDIFF)
     hash = min_max_loc_to_hash(result.min_max_loc)
-    hash[:min_score] <= FINISH_THRESHOLD && hash[:max_score] <= FINISH_THRESHOLD ? hash : nil
+    hash[:min_score] <= FINISH_THRESHOLD ? hash : nil
   end
 
   private
 
   def bw_check(template)
-    result = @gs_frame_image.match_template(template, OpenCV::CV_TM_SQDIFF)
+    result = @tgt_gray_image.match_template(template, CV_TM_SQDIFF)
     hash = min_max_loc_to_hash(result.min_max_loc)
-    hash[:min_score] <= BLACK_WHITE_THRESHOLD && hash[:max_score] <= BLACK_WHITE_THRESHOLD ? hash : nil
-  end
-
-  # MEMO: グレースケール化 -> 2値化
-  # http://ser1zw.hatenablog.com/entry/20110321/1300640121
-  def load_black_white(path)
-    OpenCV::IplImage
-        .load(path, OpenCV::CV_LOAD_IMAGE_GRAYSCALE)
-        .threshold(0, 255, OpenCV::CV_THRESH_BINARY | OpenCV::CV_THRESH_OTSU)[0]
+    hash[:min_score] <= BLACK_WHITE_THRESHOLD ? hash : nil
   end
 
   def min_max_loc_to_hash(min_max_loc)

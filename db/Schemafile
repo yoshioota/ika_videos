@@ -45,6 +45,9 @@ create_table :videos do |t|
   t.datetime :started_at
   t.datetime :ended_at
   t.string :file_name
+  t.string :game_rule
+  t.string :game_stage
+  t.string :game_result
   t.timestamps null: false
 end
 

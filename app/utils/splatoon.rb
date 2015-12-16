@@ -18,9 +18,9 @@ module Splatoon
   }
 
   RULES = {
-      'nawabari': {'ja': 'ナワバリバトル', 'en': 'Turf war'},
       'area':     {'ja': 'ガチエリア', 'en': 'Splat Zones'},
-      'yagura':   {'ja': 'ガチヤグラ', 'en': 'Tower Control'},
       'hoko':     {'ja': 'ガチホコバトル', 'en': 'Rainmaker'},
+      'nawabari': {'ja': 'ナワバリバトル', 'en': 'Turf war'},
+      'yagura':   {'ja': 'ガチヤグラ', 'en': 'Tower Control'},
   }
 end

@@ -4,6 +4,9 @@ table.table
       th ID
       th File Name
       th Duration
+      th Rule
+      th Stage
+      th Game Result
       th Local
       th Youtube ID
       th
@@ -19,10 +22,16 @@ table.table
         td
           = TimeUtil.total_seconds_to_str video.ended_at.to_i - video.started_at.to_i
         td
+          = video.game_rule
+        td
+          = video.game_stage
+        td
+          = video.game_result
+        td
           = link_to_if video.exist_local?, 'Local', open_video_path(video), method: :post, remote: true
         td
           = link_to_if video.youtube_id, video.youtube_id, "https://www.youtube.com/watch?v=#{video.youtube_id}", target: :_blank
         td
           = link_to_if video.exist_local? && video.youtube_id.nil?, 'Upload', upload_youtube_video_path(video), method: :post
         td
-          = link_to 'Destroy', video_path(video, capture_id: params[:capture_id]), data: {:confirm => 'Are you sure?'}, :method => :delete, remote: true
+          = link_to 'Destroy', video_path(video, capture_id: params[:capture_id]), data: {:confirm => 'Are you sure?'}, :method => :delete, remote: true, class: 'destroy-btn'

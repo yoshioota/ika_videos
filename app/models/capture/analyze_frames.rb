@@ -1,5 +1,4 @@
 class Capture::AnalyzeFrames
-
   def initialize(capture: nil, verbose: false)
     @capture = capture
     @verbose = verbose
@@ -11,40 +10,37 @@ class Capture::AnalyzeFrames
 
     puts "ID[#{@capture.id}] #{'%02.02f' % (total_frame.fdiv(@capture.total_frames) * 100)}% #{total_frame}/#{@capture.total_frames}" if @verbose
 
-    ret = analyze(file_path)
+    start = Time.now
+    af = Splatoon::AnalyzeFrame.new(file_path)
+    ret = af.analyze
 
     if prms = ret[:black]
       puts 'black!' if @verbose
-      @capture.markers.find_or_create_by \
-          marker_type: 'black',
-          total_frame: total_frame,
-          min_score: prms[:min_score],
-          max_score: prms[:max_score]
-    end
-
-    if prms = ret[:white]
+      find_or_create_makrers(@capture, 'black', total_frame, prms)
+    elsif prms = ret[:white]
       puts 'white!' if @verbose
-      @capture.markers.find_or_create_by \
-          marker_type: 'white',
-          total_frame: total_frame,
-          min_score: prms[:min_score],
-          max_score: prms[:max_score]
+      find_or_create_makrers(@capture, 'white', total_frame, prms)
+    elsif prms = ret[:finish]
+      puts 'finish!' if @verbose
+      find_or_create_makrers(@capture, 'finish', total_frame, prms)
     end
 
-    if prms = ret[:finish]
-      puts 'finish!' if @verbose
-      @capture.markers.find_or_create_by \
-        marker_type: 'finish',
-        total_frame: total_frame,
-        min_score: prms[:min_score],
-        max_score: prms[:max_score]
-    end
+    # elsif prms = af.stage
+    #   find_or_create_makrers(@capture, prms[:stage_name], total_frame, prms)
+    # elsif prms = af.game_result
+    #   find_or_create_makrers(@capture, prms[:game_result_name], total_frame, prms)
+    # end
+
+    puts "#{'%.2f' % ((Time.now - start).to_f * 1000)} ms" if @verbose
   end
 
-  def analyze(image_file_path)
-    start = Time.now
-    ret = Splatoon::AnalyzeFrame.new(image_file_path).analyze
-    puts "#{'%.2f' % ((Time.now - start).to_f * 1000)} ms" if @verbose
-    ret
+  def find_or_create_makrers(capture, marker_type, total_frame, prms)
+    options = {
+      marker_type: marker_type,
+      total_frame: total_frame,
+      min_score: prms[:min_score],
+      max_score: prms[:max_score]
+    }
+    capture.markers.find_or_create_by(options)
   end
 end
