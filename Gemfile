@@ -39,6 +39,7 @@ gem 'toastr-rails'
 gem 'uri-js-rails'
 
 gem 'awesome_print'
+gem 'tapp'
 
 gem 'google-api-client', '>0.7'
 gem 'faraday'
