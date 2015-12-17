@@ -116,6 +116,7 @@ class CreateVideosWorker
     end
     video.save!
   end
+
   def group_videos
     finishes = fetch_markers('finish', 50_000_000)
     whites = fetch_markers('white', 200_000)
