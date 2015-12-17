@@ -27,10 +27,9 @@ class FfmpegUtil
     metadata
   end
 
-  def self.initialize_frame_dir(output_path)
+  def self.clean_frame_dir(output_path)
     fail unless output_path.index Settings.game_frames_path
     FileUtils.rm_rf(output_path) if File.exist?(output_path)
-    FileUtils.mkdir_p(output_path)
   end
 
   def self.make_frames(seek, input_file_path, output_path, vframes = 3600, scale = 1)

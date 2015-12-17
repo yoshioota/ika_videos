@@ -3,6 +3,13 @@ class Video < ActiveRecord::Base
   belongs_to :capture, counter_cache: true
   has_many :playlists_videos, dependent: :destroy
 
+  def kill_ratio
+    return nil if kills.blank? || deaths.blank?
+    return -999 if kills.zero?
+    return 999 if deaths.zero?
+    ('%.1f' % (kills.to_f / deaths.to_f)).to_f
+  end
+
   def output_file_path
     File.join Settings.movie_output_path, file_name
   end

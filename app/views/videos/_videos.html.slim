@@ -6,7 +6,9 @@ table.table
       th Duration
       th Rule
       th Stage
-      th Game Result
+      th.text-center Kills
+      th.text-center Deaths
+      th Result
       th Local
       th Youtube ID
       th
@@ -25,6 +27,10 @@ table.table
           = video.game_rule
         td
           = video.game_stage
+        td.text-right
+          = video.kills
+        td.text-right
+          = video.deaths
         td
           = video.game_result
         td

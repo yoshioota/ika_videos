@@ -48,6 +48,8 @@ create_table :videos do |t|
   t.string :game_rule
   t.string :game_stage
   t.string :game_result
+  t.integer :kills
+  t.integer :deaths
   t.timestamps null: false
 end
 

@@ -21,8 +21,8 @@ namespace :ridgepole do
     system cmd
   end
 
-  desc 'apply-with-schema-dump'
-  task 'apply-with-schema-dump': %i[ridgepole:apply db:schema:dump]
+  desc 'update'
+  task 'update': %i[ridgepole:apply db:schema:dump]
 
   namespace :heroku do
     desc 'dry-run for Heroku'
