@@ -85,20 +85,21 @@ ActiveRecord::Schema.define(version: 0) do
   add_index "playlists_videos", ["playlist_id", "video_id", "order_no"], name: "idx1", using: :btree
 
   create_table "videos", force: :cascade do |t|
-    t.integer  "capture_id",    limit: 4
-    t.integer  "total_frames",  limit: 4
-    t.integer  "start_frame",   limit: 4
-    t.integer  "end_frame",     limit: 4
-    t.string   "youtube_id",    limit: 255
+    t.integer  "capture_id",   limit: 4
+    t.integer  "total_frames", limit: 4
+    t.integer  "start_frame",  limit: 4
+    t.integer  "end_frame",    limit: 4
+    t.string   "youtube_id",   limit: 255
     t.datetime "started_at"
     t.datetime "ended_at"
-    t.string   "file_name",     limit: 255
-    t.string   "upload_status", limit: 255
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.string   "file_name",    limit: 255
+    t.string   "game_rule",    limit: 255
+    t.string   "game_stage",   limit: 255
+    t.string   "game_result",  limit: 255
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
   end
 
   add_index "videos", ["capture_id"], name: "index_videos_on_capture_id", using: :btree
-  add_index "videos", ["upload_status"], name: "index_videos_on_upload_status", using: :btree
 
 end
