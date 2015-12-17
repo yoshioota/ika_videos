@@ -1,4 +1,4 @@
-class OpencvUtil
+class OpenCvUtil
   include OpenCV
 
   def self.to_otsu(image)
@@ -13,5 +13,9 @@ class OpencvUtil
   def self.window_loop
     GUI::wait_key
     GUI::Window.destroy_all
+  end
+
+  def self.min_max_loc_to_hash(min_max_loc)
+    Hash[%i{min_score max_score min_point max_point}.zip(min_max_loc)]
   end
 end
