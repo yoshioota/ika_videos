@@ -12,11 +12,16 @@ class Video < ActiveRecord::Base
     mod.zero? ? seconds : seconds + 1
   end
 
+  # TODO: upload_statusを作りアップロード中かの判別をする。
   def uploadable?
     exist_local? && !youtube_id?
   end
 
   def exist_local?
     File.exist?(output_file_path)
+  end
+
+  def title
+    [File.basename(output_file_path, '.*'), game_rule, game_stage, game_result].join('-')
   end
 end

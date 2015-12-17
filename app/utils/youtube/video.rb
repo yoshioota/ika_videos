@@ -9,7 +9,8 @@ class Youtube::Video
     fail unless File.file?(video.output_file_path)
     opts = {
         file: video.output_file_path,
-        title: File.basename(video.output_file_path)
+        description: create_description(video),
+        title: video.title
     }
     video.youtube_id = insert(opts)
     video.save!
@@ -49,5 +50,13 @@ class Youtube::Video
       puts e.result.body
       raise
     end
+  end
+
+  def create_description(video)
+    ret = ''
+    ret << "rule: #{video.game_rule}\n" if video.game_rule
+    ret << "stage: #{video.game_stage}\n" if video.game_stage
+    ret << "result: #{video.game_result}\n" if video.game_result
+    ret
   end
 end

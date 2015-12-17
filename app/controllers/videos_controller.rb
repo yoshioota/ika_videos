@@ -22,7 +22,7 @@ class VideosController < ApplicationController
 
   def upload_youtube
     UploadVideoWorker.perform_async(@video.id)
-    redirect_to action: :index
+    head :ok
   end
 
   def extract
@@ -35,6 +35,9 @@ class VideosController < ApplicationController
   def search_videos
     videos = Video
     videos = videos.where(capture_id: @capture.id) if @capture
+    videos = videos.where(game_rule: params[:game_rule]) if params[:game_rule].present?
+    videos = videos.where(game_stage: params[:game_stage]) if params[:game_stage].present?
+    videos = videos.where(game_result: params[:game_result]) if params[:game_result].present?
     videos.order(started_at: :desc)
   end
 

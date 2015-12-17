@@ -16,11 +16,13 @@ table.table
         td
           = playlists_video.order_no
         td
-          = video.file_name
-          |&nbsp;
-          = link_to_if File.exist?(video.output_file_path), 'Local', open_video_path(video), method: :post, remote: true, class: 'btn btn-default btn-sm'
-          |&nbsp;
-          = link_to_if video.youtube_id, 'Youtube', "https://www.youtube.com/watch?v=#{video.youtube_id}", target: :_blank, class: 'btn btn-default btn-sm'
+          .pull-left
+            = video.title
+          .text-right
+            |&nbsp;
+            = link_to_if File.exist?(video.output_file_path), 'Local', open_video_path(video), method: :post, remote: true, class: 'btn btn-default btn-sm'
+            |&nbsp;
+            = link_to_if video.youtube_id, 'Youtube', "https://www.youtube.com/watch?v=#{video.youtube_id}", target: :_blank, class: 'btn btn-default btn-sm'
         td
           = TimeUtil.total_seconds_to_str video.ended_at.to_i - video.started_at.to_i
         td
