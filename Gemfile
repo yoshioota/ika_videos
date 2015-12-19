@@ -18,9 +18,8 @@ gem 'sidekiq'
 gem 'sidetiq'
 gem 'sidekiq-unique-jobs'
 gem 'sidekiq-limit_fetch'
-gem 'sinatra', :require => nil
+gem 'sinatra', require: nil
 
-gem 'slim-rails'
 
 gem 'ridgepole'
 
@@ -31,6 +30,7 @@ gem 'parallel'
 gem 'puma'
 gem 'foreman'
 
+gem 'slim-rails'
 gem 'bootstrap-sass'
 gem 'bootstrap_form'
 gem 'font-awesome-rails'
