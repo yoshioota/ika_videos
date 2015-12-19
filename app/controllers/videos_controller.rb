@@ -8,6 +8,9 @@ class VideosController < ApplicationController
 
   def search
     @videos = search_videos
+    if params[:open_all]
+      open_all @videos
+    end
   end
 
   def destroy
@@ -32,8 +35,16 @@ class VideosController < ApplicationController
 
   private
 
+  def open_all(videos)
+    paths = videos.map(&:output_file_path).select { |s| File.file?(s) }.reverse
+    CommandUtil.open_paths(*paths)
+  end
+
   def search_videos
+    @date_on = Date.parse(params[:date_on]) rescue nil
     videos = Video
+    videos = videos.includes(:capture)
+    videos = videos.where(started_at: @date_on.to_time.all_day) if @date_on
     videos = videos.where(capture_id: @capture.id) if @capture
     videos = videos.where(game_rule: params[:game_rule]) if params[:game_rule].present?
     videos = videos.where(game_stage: params[:game_stage]) if params[:game_stage].present?

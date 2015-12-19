@@ -1,8 +1,10 @@
+h1 Listing Videos
+
 - if @capture
   = render 'shared/captures/show', capture: @capture
   = render 'shared/captures/tab'
-
-h1 Listing Videos
+- else
+  = render 'videos/search_form'
 
 .videos
   = render 'videos/videos', videos: @videos

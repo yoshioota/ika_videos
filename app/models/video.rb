@@ -1,7 +1,25 @@
 class Video < ActiveRecord::Base
+  extend Enumerize
 
   belongs_to :capture, counter_cache: true
   has_many :playlists_videos, dependent: :destroy
+
+  enumerize :game_rule, in: Splatoon::RULES.keys
+  enumerize :game_stage, in: Splatoon::STAGES.keys
+  enumerize :game_result, in: Splatoon::RESULTS.keys
+
+  def self.win_ratio(videos)
+    game_results = videos.map(&:game_result)
+    wins = game_results.count { |gr| gr == 'win' }
+    loses = game_results.count { |gr| gr == 'lose' }
+    if wins == 0
+      0
+    elsif loses == 0
+      100
+    else
+      wins.to_f / (wins + loses) * 100
+    end
+  end
 
   def kill_ratio
     return nil if kills.blank? || deaths.blank?

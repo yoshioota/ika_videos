@@ -1,7 +1,10 @@
+h2 勝率: #{'%.02f' % Video.win_ratio(videos)}%
+
 table.table
   thead
     tr
-      th ID
+      th Capture ID
+      th Video ID
       th Title
       th Duration
       th Rule
@@ -10,7 +13,7 @@ table.table
       th.text-center Deaths
       th Result
       th Local
-      th Youtube ID
+      th Youtube
       th
       th
 
@@ -18,21 +21,23 @@ table.table
     - videos.each do |video|
       tr
         td
-          = video.id
+          = link_to_if video.capture, video.capture.try(:id), capture_frames_path(video.capture)
         td
+          = video.id
+        td(nowrap='nowrap')
           = video.title
         td
-          = TimeUtil.total_seconds_to_str video.ended_at.to_i - video.started_at.to_i
-        td
-          = video.game_rule
-        td
-          = video.game_stage
+          = TimeUtil.total_seconds_to_ms_str video.total_seconds
+        td(nowrap='nowrap')
+          = video.game_rule.try(:text)
+        td(nowrap='nowrap')
+          = video.game_stage.try(:text)
         td.text-right
           = video.kills
         td.text-right
           = video.deaths
         td
-          = video.game_result
+          = video.game_result.try(:text)
         td
           = link_to_if video.exist_local?, 'Local', open_video_path(video), method: :post, remote: true
         td

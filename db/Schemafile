@@ -54,6 +54,10 @@ create_table :videos do |t|
 end
 
 add_index :videos, :capture_id
+add_index :videos, :started_at
+add_index :videos, :game_rule
+add_index :videos, :game_stage
+add_index :videos, :game_result
 
 create_table :playlists do |t|
   t.string :youtube_id

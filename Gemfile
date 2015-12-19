@@ -20,6 +20,7 @@ gem 'sidekiq-unique-jobs'
 gem 'sidekiq-limit_fetch'
 gem 'sinatra', require: nil
 
+gem 'enumerize'
 
 gem 'ridgepole'
 

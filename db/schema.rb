@@ -103,5 +103,9 @@ ActiveRecord::Schema.define(version: 0) do
   end
 
   add_index "videos", ["capture_id"], name: "index_videos_on_capture_id", using: :btree
+  add_index "videos", ["game_result"], name: "index_videos_on_game_result", using: :btree
+  add_index "videos", ["game_rule"], name: "index_videos_on_game_rule", using: :btree
+  add_index "videos", ["game_stage"], name: "index_videos_on_game_stage", using: :btree
+  add_index "videos", ["started_at"], name: "index_videos_on_started_at", using: :btree
 
 end
