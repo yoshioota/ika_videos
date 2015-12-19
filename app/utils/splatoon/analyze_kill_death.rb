@@ -9,14 +9,12 @@ class Splatoon::AnalyzeKillDeath
   cattr_accessor :x_mark_template
   cattr_accessor :num_template
 
-  def initialize(file_path)
-    fail file_path.to_s unless File.file?(file_path)
-    @tgt_gray_image = IplImage.load(file_path, CV_LOAD_IMAGE_GRAYSCALE)
+  def initialize(image)
+    @tgt_gray_image = image.resize(NEW_SIZE)
     @tgt_bw_image = @tgt_gray_image.threshold(200, 255, CV_THRESH_BINARY)
   end
 
   def kill_death
-    return nil unless kill_death_scene?
     compute_kill_death
   end
 

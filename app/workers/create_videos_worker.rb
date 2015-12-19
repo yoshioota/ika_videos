@@ -37,9 +37,10 @@ class CreateVideosWorker
     maybe_rule = nil
 
     (1..3).each do |sec|
-      (0..59).step(10) do |frame|
+      (0..59).step(12) do |frame|
         image_path = capture.get_frame_image_file_path_total_frame(video.start_frame + ((sec * 60) + frame))
-        af = Splatoon::AnalyzeRuleAndStage.new(image_path)
+        image = OpenCV::IplImage.load(image_path, OpenCV::CV_LOAD_IMAGE_GRAYSCALE)
+        af = Splatoon::AnalyzeRuleAndStage.new(image)
         if stage = af.stage
           if stage[:min_score] < stage_min_score
             maybe_stage = stage
@@ -71,7 +72,8 @@ class CreateVideosWorker
     (7..10).each do |sec|
       (0..59).step(3) do |frame|
         image_path = capture.get_frame_image_file_path_total_frame(video.end_frame + ((sec * 60) + frame))
-        af = Splatoon::AnalyzeGameResult.new(image_path)
+        image = OpenCV::IplImage.load(image_path, OpenCV::CV_LOAD_IMAGE_GRAYSCALE)
+        af = Splatoon::AnalyzeGameResult.new(image)
         if game_result = af.game_result
           if game_result[:min_score] < result_min_score
             maybe_result = game_result
@@ -87,19 +89,20 @@ class CreateVideosWorker
     video.save!
   end
 
-
   # TODO: 移動する
   def analyze_kill_death(video)
     capture = video.capture
     worker = CreateFrameFilesWorker.new(capture)
 
     kd = nil
-    (14..19).each do |sec|
-      (0..59).step(10) do |frame|
+    (10..19).each do |sec|
+      (0..59).step(18) do |frame|
         total_frame = video.end_frame + ((sec * 60) + frame)
         worker.make_frame(total_frame, 1)
         image_path = capture.get_frame_image_file_path_total_frame(total_frame, 1)
-        af = Splatoon::AnalyzeKillDeath.new(image_path)
+        image = OpenCV::IplImage.load(image_path, OpenCV::CV_LOAD_IMAGE_GRAYSCALE)
+        af = Splatoon::AnalyzeKillDeath.new(image)
+        next unless af.kill_death_scene?
         next unless kill_death = af.kill_death
         next unless num = af.number
 
@@ -108,7 +111,6 @@ class CreateVideosWorker
       break if kd
     end
 
-    #
     # # puts "video id #{video.id} rule #{maybe_rule.pretty_inspect} stage #{maybe_stage.pretty_inspect}"
     if kd
       video.kills  = kd[0]

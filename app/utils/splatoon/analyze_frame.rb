@@ -15,9 +15,8 @@ class Splatoon::AnalyzeFrame
   BLACK_WHITE_THRESHOLD = 10_000_000
   FINISH_THRESHOLD      = 50_000_000
 
-  def initialize(file_path)
-    fail file_path.to_s unless File.file?(file_path)
-    @tgt_gray_image = IplImage.load(file_path, CV_LOAD_IMAGE_GRAYSCALE).resize(NEW_SIZE)
+  def initialize(image)
+    @tgt_gray_image = image.resize(NEW_SIZE)
     @tgt_otsu_image = OpenCvUtil.to_otsu(@tgt_gray_image)
   end
 
