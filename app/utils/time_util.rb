@@ -27,11 +27,26 @@ class TimeUtil
     format_sec(* total_seconds_to_hmsf(total_seconds))
   end
 
+  def self.total_seconds_to_ms_str(total_seconds)
+    format_ms(* total_seconds_to_ms(total_seconds))
+  end
+
   def self.total_seconds_to_hmsf(total_seconds)
     hour  = total_seconds / 3600
     min   = total_seconds % 3600 / 60
     sec   = total_seconds % 60
     [hour, min, sec]
+  end
+
+  def self.total_seconds_to_ms(total_seconds)
+    hour  = total_seconds / 3600
+    min   = (hour * 60) + total_seconds % 3600 / 60
+    sec   = total_seconds % 60
+    [min, sec]
+  end
+
+  def self.format_ms(min, sec)
+    "#{'%02d' % min}:#{'%02d' % sec}"
   end
 
   def self.format_sec(hour, min, sec)

@@ -6,7 +6,7 @@ class OpenCvUtil
   end
 
   def self.create_window(image, name = Time.now.to_f.to_s)
-    window = GUI::Window.new(name)
+    window = GUI::Window.new(name, CV_WINDOW_AUTOSIZE)
     window.show image
   end
 

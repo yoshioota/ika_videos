@@ -1,0 +1,28 @@
+---
+ja:
+  enumerize:
+    video:
+      game_rule:
+         area:     ガチエリア
+         hoko:     ガチホコバトル
+         yagura:   ガチヤグラ
+         nawabari: ナワバリバトル
+
+      game_stage:
+        arowana:   アロワナモール
+        bbass:    Bバスパーク
+        dekaline: デカライン高架下
+        hakofugu: ハコフグ倉庫
+        hirame:   ヒラメが丘団地
+        hokke:    ホッケふ頭
+        kinmedai: キンメダイ美術館
+        mahimahi: マヒマヒリゾート&スパ
+        masaba:   マサバ海峡大橋
+        mongara:  モンガラキャンプ場
+        mozuku:   モズク農園
+        negitoro: ネギトロ炭鉱
+        shionome: シオノメ油田
+        tachiuo:  タチウオパーキング
+      game_result:
+        win:      勝利
+        lose:     敗北

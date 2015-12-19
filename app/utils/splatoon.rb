@@ -1,5 +1,12 @@
 module Splatoon
 
+  RULES = {
+      'area':     {'ja': 'ガチエリア', 'en': 'Splat Zones'},
+      'hoko':     {'ja': 'ガチホコバトル', 'en': 'Rainmaker'},
+      'yagura':   {'ja': 'ガチヤグラ', 'en': 'Tower Control'},
+      'nawabari': {'ja': 'ナワバリバトル', 'en': 'Turf war'},
+  }
+
   STAGES = {
       'arowana':  {'ja': 'アロワナモール', 'en': 'Arowana mall'},
       'bbass':    {'ja': 'Bバスパーク', 'en': 'Blackbelly Skatepark'},
@@ -17,10 +24,8 @@ module Splatoon
       'tachiuo':  {'ja': 'タチウオパーキング', 'en': 'Moray Towers'},
   }
 
-  RULES = {
-      'area':     {'ja': 'ガチエリア', 'en': 'Splat Zones'},
-      'hoko':     {'ja': 'ガチホコバトル', 'en': 'Rainmaker'},
-      'nawabari': {'ja': 'ナワバリバトル', 'en': 'Turf war'},
-      'yagura':   {'ja': 'ガチヤグラ', 'en': 'Tower Control'},
+  RESULTS = {
+      'win': {'ja': '勝利'},
+      'lose': {'ja': '敗北'}
   }
 end
