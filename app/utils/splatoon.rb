@@ -5,7 +5,7 @@ module Splatoon
       'hoko':     {'ja': 'ガチホコバトル', 'en': 'Rainmaker'},
       'yagura':   {'ja': 'ガチヤグラ', 'en': 'Tower Control'},
       'nawabari': {'ja': 'ナワバリバトル', 'en': 'Turf war'},
-  }
+  }.with_indifferent_access
 
   STAGES = {
       'arowana':  {'ja': 'アロワナモール', 'en': 'Arowana mall'},
@@ -22,10 +22,10 @@ module Splatoon
       'negitoro': {'ja': 'ネギトロ炭鉱', 'en': 'Bulefin Depot'},
       'shionome': {'ja': 'シオノメ油田', 'en': 'Saltspray Rig'},
       'tachiuo':  {'ja': 'タチウオパーキング', 'en': 'Moray Towers'},
-  }
+  }.with_indifferent_access
 
   RESULTS = {
       'win': {'ja': '勝利'},
       'lose': {'ja': '敗北'}
-  }
+  }.with_indifferent_access
 end

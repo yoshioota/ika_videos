@@ -11,8 +11,8 @@ class TimeUtil
     duration.split(/[:\.]/).map(&:to_i)
   end
 
-  def self.total_frame_to_str(total_frame)
-    format(* total_frame_to_hmsf(total_frame))
+  def self.total_frame_to_hmsf_str(total_frame)
+    format_hmsf(* total_frame_to_hmsf(total_frame))
   end
 
   def self.total_frame_to_hmsf(total_frame)
@@ -53,7 +53,7 @@ class TimeUtil
     "#{'%02d' % hour}:#{'%02d' % min}:#{'%02d' % sec}"
   end
 
-  def self.format(hour, min, sec, frame)
+  def self.format_hmsf(hour, min, sec, frame)
     "#{'%02d' % hour}:#{'%02d' % min}:#{'%02d' % sec}.#{'%02d' % frame}"
   end
 

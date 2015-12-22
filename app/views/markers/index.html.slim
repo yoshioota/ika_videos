@@ -13,7 +13,7 @@ table.table
   - @capture.markers.order(:total_frame).each do |marker|
     tr
       td = marker.total_frame
-      td = link_to TimeUtil.total_frame_to_str(marker.total_frame), capture_frame_path(@capture, marker.total_frame)
+      td = link_to TimeUtil.total_frame_to_hmsf_str(marker.total_frame), capture_frame_path(@capture, marker.total_frame)
       td = marker.marker_type
       td = marker.min_score.to_s
       td = marker.max_score.to_s
