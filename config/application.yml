@@ -10,7 +10,7 @@ defaults: &defaults
   delete_capture_dir: true
 
   # 抽出したビデオファイルを消すか
-  delete_video_file: false
+  delete_video_file: true
 
   playlist_check_seconds: 10
 
