@@ -10,8 +10,10 @@ class FramesController < ApplicationController
   end
 
   def img
-    path = File.exist?(@capture.get_frame_image_file_path_total_frame(params[:id].to_i)) ?
-        @capture.get_frame_image_file_path_total_frame(params[:id].to_i) :
+    scale = (params[:scale].presence || Settings.default_scale).to_i
+    img_path = @capture.get_or_create_frame_image_file_path_total_frame(params[:id].to_i, scale)
+    path = File.exist?(img_path) ?
+        img_path :
         Rails.root.join('data/no-image.jpg').to_s # FIXME: assets/images/に入れようとしたけどうまくいかなかったので一旦dataへ入れる。
     send_file(path, disposition: 'inline')
   end
