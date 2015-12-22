@@ -56,6 +56,8 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :game_results
+
   resource :credential, only: %w(edit update)
 
   require 'sidekiq/web'

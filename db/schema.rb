@@ -45,6 +45,24 @@ ActiveRecord::Schema.define(version: 0) do
     t.datetime "updated_at",                null: false
   end
 
+  create_table "game_results", force: :cascade do |t|
+    t.string   "result_type",   limit: 255
+    t.string   "span_type",     limit: 255
+    t.string   "date_on",       limit: 255
+    t.string   "rule",          limit: 255
+    t.string   "stage",         limit: 255
+    t.integer  "wins",          limit: 4
+    t.integer  "losses",        limit: 4
+    t.float    "win_loss_rate", limit: 24
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  add_index "game_results", ["result_type"], name: "index_game_results_on_result_type", using: :btree
+  add_index "game_results", ["rule"], name: "index_game_results_on_rule", using: :btree
+  add_index "game_results", ["stage"], name: "index_game_results_on_stage", using: :btree
+  add_index "game_results", ["win_loss_rate"], name: "index_game_results_on_win_loss_rate", using: :btree
+
   create_table "markers", force: :cascade do |t|
     t.integer  "capture_id",  limit: 4,                            null: false
     t.integer  "total_frame", limit: 8,                            null: false
@@ -98,6 +116,9 @@ ActiveRecord::Schema.define(version: 0) do
     t.string   "game_result",  limit: 255
     t.integer  "kills",        limit: 4
     t.integer  "deaths",       limit: 4
+    t.string   "rank_str",     limit: 255
+    t.integer  "rank_no",      limit: 4
+    t.integer  "rank_points",  limit: 4
     t.datetime "created_at",               null: false
     t.datetime "updated_at",               null: false
   end

@@ -50,6 +50,9 @@ create_table :videos do |t|
   t.string :game_result
   t.integer :kills
   t.integer :deaths
+  t.string :rank_str
+  t.integer :rank_no
+  t.integer :rank_points
   t.timestamps null: false
 end
 
@@ -82,3 +85,20 @@ create_table :credentials do |t|
   t.string :client_secret
   t.timestamps null: false
 end
+
+create_table :game_results do |t|
+  t.string :result_type
+  t.string :span_type
+  t.string :date_on
+  t.string :rule
+  t.string :stage
+  t.integer :wins
+  t.integer :losses
+  t.float :win_loss_rate
+  t.timestamps null: false
+end
+
+add_index :game_results, :result_type
+add_index :game_results, :rule
+add_index :game_results, :stage
+add_index :game_results, :win_loss_rate

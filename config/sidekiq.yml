@@ -18,6 +18,7 @@ production:
   - extract_video_files
   - execute_all
   - upload_youtube
+  - update_game_result
 :limits:
   check_capture_dir: 1
   execute_all: 1
@@ -25,3 +26,4 @@ production:
   create_markers: 1
   upload_youtube: 1
   extract_video_files: 1
+  update_game_result: 1
