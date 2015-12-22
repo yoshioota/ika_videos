@@ -4,6 +4,10 @@ class Capture < ActiveRecord::Base
 
   scope :visible, -> { where(visible: true) }
 
+  def self.make_image_file_name(file_no)
+    "img-#{'%015d' % file_no}.jpeg"
+  end
+
   def self.update_hash
     # Memo: この式ではローカルビデオファイルの更新が検知できない。
     # 検知させるか、もしくは10分に1回は更新させるようにするか。。
@@ -20,6 +24,12 @@ class Capture < ActiveRecord::Base
 
   def captured_dir
     File.dirname(full_path)
+  end
+
+  def get_or_create_frame_image_file_path_total_frame(total_frame, scale = Settings.default_scale)
+    path = get_frame_image_file_path_total_frame(total_frame, scale)
+    return path if File.file?(path)
+    CreateFrameFilesWorker.new(self).make_frame(total_frame, scale)
   end
 
   def get_frame_image_file_path_total_frame(total_frame, scale = Settings.default_scale)
@@ -41,7 +51,7 @@ class Capture < ActiveRecord::Base
   end
 
   def make_image_file_name(file_no)
-    "img-#{'%015d' % file_no}.jpeg"
+    self.class.make_image_file_name(file_no)
   end
 
   def total_min
