@@ -11,7 +11,8 @@ class Capture::AnalyzeFrames
     puts "ID[#{@capture.id}] #{'%02.02f' % (total_frame.fdiv(@capture.total_frames) * 100)}% #{total_frame}/#{@capture.total_frames}" if @verbose
 
     start = Time.now
-    af = Splatoon::AnalyzeFrame.new(file_path)
+    image = OpenCV::IplImage.load(file_path, OpenCV::CV_LOAD_IMAGE_GRAYSCALE)
+    af = Splatoon::AnalyzeFrame.new(image)
     ret = af.analyze
 
     if prms = ret[:black]

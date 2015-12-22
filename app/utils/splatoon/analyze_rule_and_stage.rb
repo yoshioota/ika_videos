@@ -3,10 +3,14 @@ class Splatoon::AnalyzeRuleAndStage
 
   NEW_SIZE = CvSize.new(1280, 720)
 
-  STAGE_THRESHOLD       = 50_000_000
+  STAGE_THRESHOLD       = 80_000_000
 
   cattr_accessor :rule_templates
   cattr_accessor :stage_templates
+
+  def self.under_threshold?(score)
+    score < STAGE_THRESHOLD
+  end
 
   def initialize(image)
     @tgt_gray_image = image.resize(NEW_SIZE)
@@ -16,7 +20,7 @@ class Splatoon::AnalyzeRuleAndStage
   def rule
     rule_scores = {}
 
-    @tgt_bw_image.set_roi(rule_roi)
+    @tgt_bw_image.set_roi(target_rule_roi)
 
     get_rule_templates.each do |rule_name, rule_template|
       hash = OpenCvUtil.min_max_loc_to_hash(@tgt_bw_image.match_template(rule_template, CV_TM_SQDIFF).min_max_loc)
@@ -26,9 +30,9 @@ class Splatoon::AnalyzeRuleAndStage
 
     @tgt_bw_image.reset_roi
 
-    rule_scores.delete_if{ |min_score, _| min_score >= STAGE_THRESHOLD }
-
-    rule_scores.values.sort_by{|h| h[:min_score]}.try(:first)
+    # rule_scores.delete_if{ |min_score, _| min_score >= STAGE_THRESHOLD }
+    # rule_scores.values.sort_by{|h| h[:min_score]}.try(:first)
+    rule_scores[rule_scores.keys.sort.first]
   end
 
   def stage
@@ -55,6 +59,10 @@ class Splatoon::AnalyzeRuleAndStage
   end
 
   private
+
+  def target_rule_roi
+    CvRect.new(479, 247, 322, 70)
+  end
 
   def rule_roi
     CvRect.new(480, 248, 320, 68)
@@ -94,7 +102,7 @@ class Splatoon::AnalyzeRuleAndStage
       @@stage_templates[stage_name] = IplImage.load(path, CV_LOAD_IMAGE_GRAYSCALE).threshold(240, 255, CV_THRESH_BINARY).resize(NEW_SIZE)
       @@stage_templates[stage_name].set_roi(stage_roi)
       # @@stage_templates[stage_name].rectangle! stage_roi.top_left, stage_roi.bottom_right, color: OpenCV::CvColor::White
-      OpenCvUtil.create_window(@@stage_templates[stage_name], stage_name.to_s)
+      # OpenCvUtil.create_window(@@stage_templates[stage_name], stage_name.to_s)
     end
 
     # OpenCvUtil.window_loop

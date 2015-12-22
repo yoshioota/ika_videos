@@ -1,6 +1,7 @@
 class FfmpegUtil
 
   def self.get_metadata(_path)
+    rails _path unless File.file?(_path)
     path = Shellwords.escape(_path)
     cmd = "ffprobe -i #{path} -hide_banner"
     ret = CommandUtil.command_execute(cmd)
@@ -23,7 +24,7 @@ class FfmpegUtil
         metadata[:creation_time] ||= Time.parse($1 + ' UTC')
       end
     end
-    fail if metadata.blank?
+    return nil if metadata.blank?
     metadata
   end
 
@@ -47,8 +48,8 @@ class FfmpegUtil
 
   def self.extract_movie(start_frame:, end_frame:, input_file:, output_file:)
     FileUtils.mkdir_p(File.dirname(output_file))
-    start_time = TimeUtil.total_frame_to_str(start_frame)
-    length = TimeUtil.total_frame_to_str(end_frame - start_frame)
+    start_time = TimeUtil.total_frame_to_hmsf_str(start_frame)
+    length = TimeUtil.total_frame_to_hmsf_str(end_frame - start_frame)
     input_file = Shellwords.escape(input_file)
     output_file = Shellwords.escape(output_file)
     cmd = "ffmpeg -ss #{start_time} -i #{input_file} -t #{length} -vcodec copy -acodec copy #{output_file} -hide_banner"

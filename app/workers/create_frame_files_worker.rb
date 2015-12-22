@@ -25,10 +25,7 @@ class CreateFrameFilesWorker
     end
   end
 
-  # TODO: 最終的に全体をCvCptureから取るようにする。
-  include OpenCV
   def make_frame(total_frame, scale = Settings.default_scale)
-    # debugger
     min = total_frame / 3600
     frame_no = total_frame % 3600 + 1
 
@@ -37,11 +34,10 @@ class CreateFrameFilesWorker
     min_dir = File.join(output_file_dir, min.to_s)
     FileUtils.mkdir_p(min_dir)
 
-    cv_capture = CvCapture.open(@capture.full_path)
-    cv_capture.frames= total_frame
-    output_path = File.join(min_dir, "#{'img-%015d.jpeg' % frame_no}")
-    image = cv_capture.query
-    image.save_image(output_path)
+    seek = TimeUtil.total_frame_to_hmsf_str(total_frame)
+    output_path = File.join(min_dir, Capture.make_image_file_name(frame_no))
+    FfmpegUtil.make_frames(seek, @capture.full_path, output_path, 1, scale)
+    output_path
   end
 
   def make_frames(start_frame:, end_frame:, scale: Settings.default_scale)

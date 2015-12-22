@@ -1,9 +1,9 @@
 class Splatoon::AnalyzeFrame
   include OpenCV
 
-  BLACK_IMAGE_PATH  = Rails.root.join("data/7-black.jpeg").to_s
-  WHITE_IMAGE_PATH  = Rails.root.join("data/7-white.jpeg").to_s
-  FINISH_IMAGE_PATH = Rails.root.join("data/4-finish.jpeg").to_s
+  BLACK_IMAGE_PATH  = Rails.root.join("data/8-black.jpeg").to_s
+  WHITE_IMAGE_PATH  = Rails.root.join("data/8-white.jpeg").to_s
+  FINISH_IMAGE_PATH = Rails.root.join("data/8-finish.jpeg").to_s
 
   NEW_SIZE = CvSize.new(1280 / Settings.default_scale, 720 / Settings.default_scale)
 

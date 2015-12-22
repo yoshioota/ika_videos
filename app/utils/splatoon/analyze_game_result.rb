@@ -1,11 +1,15 @@
 class Splatoon::AnalyzeGameResult
   include OpenCV
 
-  NEW_SIZE = CvSize.new(1280 / Settings.default_scale, 720 / Settings.default_scale)
+  NEW_SIZE = CvSize.new(1280, 720)
 
-  GAME_RESULT_THRESHOLD = 50_000_000
+  GAME_RESULT_THRESHOLD = 80_000_000
 
   cattr_accessor :game_result_templates
+
+  def self.under_threshold?(score)
+    score < GAME_RESULT_THRESHOLD
+  end
 
   def initialize(image)
     @tgt_gray_image = image.resize(NEW_SIZE)
@@ -15,21 +19,27 @@ class Splatoon::AnalyzeGameResult
   def game_result
     game_results_hash = {}
 
+    @tgt_otsu_image.set_roi(target_game_result_roi)
+
     get_game_result_templates.each do |game_result_name, game_result_template|
       hash = min_max_loc_to_hash(@tgt_otsu_image.match_template(game_result_template, CV_TM_SQDIFF).min_max_loc)
       hash[:game_result] = game_result_name
       game_results_hash[hash[:min_score]] = hash
     end
 
-    game_results_hash.delete_if{ |min_score, _| min_score >= GAME_RESULT_THRESHOLD }
+    @tgt_otsu_image.reset_roi
 
-    game_results_hash.values.sort_by{|h| h[:min_score]}.try(:first)
+    game_results_hash.values.sort_by{|h| h[:min_score]}.first
   end
 
   private
 
+  def target_game_result_roi
+    CvRect.new(47, 31, 242, 122)
+  end
+
   def game_result_roi
-    CvRect.new(12, 8, 60, 30)
+    CvRect.new(48, 32, 240, 120)
   end
 
   def get_game_result_templates
@@ -41,8 +51,10 @@ class Splatoon::AnalyzeGameResult
       @@game_result_templates[game_result_name] = IplImage.load(path, CV_LOAD_IMAGE_GRAYSCALE).threshold(245, 255, CV_THRESH_BINARY).resize(NEW_SIZE)
       # @@game_result_templates[game_result_name].rectangle! game_result_roi.top_left, game_result_roi.bottom_right, color: CvColor::White
       @@game_result_templates[game_result_name].set_roi(game_result_roi)
-      # OpencvUtil.create_window @@game_result_templates[game_result_name]
+      # OpenCvUtil.create_window @@game_result_templates[game_result_name]
     end
+
+    # OpenCvUtil.window_loop
 
     @@game_result_templates
   end
