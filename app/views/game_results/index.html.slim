@@ -1,0 +1,26 @@
+h1 Game Results
+
+div
+  = link_to 'Rule Stage', game_results_path(type: 'rule_stage'), class: 'btn btn-default'
+  |&nbsp;
+  = link_to 'Rule', game_results_path(type: 'rule'), class: 'btn btn-default'
+  |&nbsp;
+  = link_to 'Stage', game_results_path(type: 'stage'), class: 'btn btn-default'
+
+table.table
+  tr
+    th タイプ
+    th ルール
+    th ステージ
+    th.text-right 勝利
+    th.text-right 敗北
+    th.text-right 勝率(%)
+  - @game_results.each do |game_result|
+    - next if game_result.win_loss_rate.zero?
+    tr
+      td = game_result.result_type.text
+      td = game_result.rule.try(:text)
+      td = game_result.stage.try(:text)
+      td.text-right = game_result.wins
+      td.text-right = game_result.losses
+      td.text-right = '%.02f' % game_result.win_loss_rate

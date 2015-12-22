@@ -31,6 +31,9 @@ html
             li*{class: (%r|/videos| === request.path ? 'active' : '')}
               = link_to videos_path do
                 |Videos
+            li*{class: (%r|/game_results| === request.path ? 'active' : '')}
+              = link_to game_results_path do
+                |Results
           ul.nav.navbar-right
             li
               = link_to edit_credential_path do
