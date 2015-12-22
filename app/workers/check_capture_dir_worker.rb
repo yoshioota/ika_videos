@@ -21,18 +21,19 @@ class CheckCaptureDirWorker
     Dir[File.join(Settings.capture_path,'**/*.mp4')].each do |path|
       next if /Flashback Recording Buffer.noindex/ === path
       capture = create_capture(path)
+      next if capture.nil?
       if capture.total_frames.nil?
         CalculateTotalFramesWorker.new.perform(capture.id)
-        CreateFrameFilesWorker.new(capture.id).make_frames(start_frame: 0, end_frame: 1)
+        CreateFrameFilesWorker.new(capture.id).make_frame(0)
         ExecuteAllWorker.perform_async(capture.id)
       end
     end
   end
 
   def create_capture(full_path)
+    return nil unless metadata = FfmpegUtil.get_metadata(full_path)
     capture = Capture.lock.find_or_create_by(full_path: full_path)
     capture.title = File.basename(full_path)
-    metadata = FfmpegUtil.get_metadata(full_path)
     capture.duration = metadata[:duration]
     capture.ended_at = metadata[:creation_time] || Time.now
     capture.exist = true
