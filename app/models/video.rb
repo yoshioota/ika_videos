@@ -8,6 +8,8 @@ class Video < ActiveRecord::Base
   enumerize :game_stage, in: Splatoon::STAGES.keys
   enumerize :game_result, in: Splatoon::RESULTS.keys
 
+  scope :gachi, -> { where(game_rule: %w(area hoko yagura)) }
+
   def self.win_ratio(videos)
     game_results = videos.map(&:game_result)
     wins = game_results.count { |gr| gr == 'win' }

@@ -3,6 +3,9 @@ h2 勝率: #{'%.02f' % Video.win_ratio(videos)}%
 table.table
   thead
     tr
+      - if params[:options]
+        th path
+        th hmsf
       th Capture ID
       th Video ID
       th Title
@@ -20,12 +23,17 @@ table.table
   tbody
     - videos.each do |video|
       tr
+        - if params[:options]
+          td
+            = video.capture.get_or_create_frame_image_file_path_total_frame(video.start_frame, 1) if video.capture
+          td
+            = TimeUtil.total_frame_to_hmsf video.start_frame
         td
-          = link_to_if video.capture, video.capture.try(:id), capture_frames_path(video.capture)
+          = link_to_if video.capture, video.capture.try(:id), capture_frames_path(video.capture) if video.capture
         td
           = video.id
         td(nowrap='nowrap')
-          = video.title
+          = video.file_name
         td
           = TimeUtil.total_seconds_to_ms_str video.total_seconds
         td(nowrap='nowrap')
