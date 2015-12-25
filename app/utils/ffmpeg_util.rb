@@ -1,7 +1,7 @@
 class FfmpegUtil
 
   def self.get_metadata(_path)
-    rails _path unless File.file?(_path)
+    raise _path unless File.file?(_path)
     path = Shellwords.escape(_path)
     cmd = "ffprobe -i #{path} -hide_banner"
     ret = CommandUtil.command_execute(cmd)
