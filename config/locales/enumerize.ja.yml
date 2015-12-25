@@ -34,7 +34,7 @@ ja:
 
     game_result:
       result_type:
-        rule_stage: ルール,ステージ
+        rule_stage: ルール&ステージ
         rule: ルール
         stage: ステージ
       rule:

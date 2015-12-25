@@ -9,6 +9,7 @@ class Video < ActiveRecord::Base
   enumerize :game_result, in: Splatoon::RESULTS.keys
 
   scope :gachi, -> { where(game_rule: %w(area hoko yagura)) }
+  scope :game_result_is_not_null, -> { where.not(game_result: nil) }
 
   def self.win_ratio(videos)
     game_results = videos.map(&:game_result)
