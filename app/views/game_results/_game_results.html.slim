@@ -1,3 +1,11 @@
+h3
+  - if @from_on.nil? && @to_on.nil?
+    |期間: すべて
+  - elsif @from_on == @to_on
+    |期間: #{@from_on}
+  - else
+    |期間: #{@from_on} ~ #{@to_on}
+
 table.table
   tr
     th タイプ

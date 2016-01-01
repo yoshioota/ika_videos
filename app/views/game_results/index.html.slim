@@ -1,6 +1,15 @@
 h1 Game Results
 
-= form_tag game_results_path, remote: true, method: :get
+= bootstrap_form_tag url: game_results_path, remote: true, method: :get do |f|
+  div
+    |タイプ&nbsp;:&nbsp;
+    - [%w[rule_stage ルール&ステージ], %w[rule ルール], %w[stage ステージ]].each do |options|
+      label
+        = radio_button_tag 'result_type', options[0], options[0] == @result_type, class: 'submit-if-changed'
+        |&nbsp;
+        = options[1]
+      |&nbsp;
+
   div
     |期間&nbsp;:&nbsp;
     - [%w[daily 日], %w[weekly 週], %w[total 全体]].each do |options|
@@ -11,13 +20,10 @@ h1 Game Results
       |&nbsp;
 
   div
-    |タイプ&nbsp;:&nbsp;
-    - [%w[rule_stage ルール&ステージ], %w[rule ルール], %w[stage ステージ]].each do |options|
-      label
-        = radio_button_tag 'result_type', options[0], options[0] == @result_type, class: 'submit-if-changed'
-        |&nbsp;
-        = options[1]
-      |&nbsp;
+    = select_date(@from_on, {prefix: 'date_on', include_blank: true}, {class: 'submit-if-changed'})
+
+  div
+    = f.submit '検索'
 
 .game-results
   = render 'game_results/game_results', game_result: @game_results
