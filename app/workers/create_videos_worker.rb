@@ -49,7 +49,7 @@ class CreateVideosWorker
         af = Splatoon::AnalyzeRuleAndStage.new(image)
         unless Splatoon::AnalyzeRuleAndStage.under_threshold?(stage_min_score)
           if stage = af.stage
-            puts "[#{video.id}]:area:#{stage[:min_score]}:#{stage[:stage_name]}" if @verbose
+            puts "[#{video.id}]:stage:#{stage[:min_score]}:#{stage[:stage_name]}" if @verbose
             if stage[:min_score] < stage_min_score
               maybe_stage = stage
               stage_min_score = stage[:min_score]
