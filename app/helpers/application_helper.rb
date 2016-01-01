@@ -1,5 +1,9 @@
 module ApplicationHelper
 
+  def bsbtn
+    'btn btn-default'
+  end
+
   def controller_action_class_name
     "#{controller_name}__#{action_name}"
   end
