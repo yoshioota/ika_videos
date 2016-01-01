@@ -64,4 +64,9 @@ class TimeUtil
       nil
     end
   end
+
+  def self.param_date_to_date(param_date)
+    return unless param_date
+    Date.parse(param_date.values.join('-'))
+  end
 end

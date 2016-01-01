@@ -30,7 +30,7 @@
     tr
       td Date:
       td
-        = select_date(@date_on, {include_blank: true}, {class: 'submit-if-changed', name: 'date_on'})
+        = select_date(@date_on, {include_blank: true, prefix: 'date_on'}, {class: 'submit-if-changed'})
         |&nbsp;
         = link_to 'X', 'javascript:void(0)', class: 'btn btn-default btn-sm date_on-clear-btn'
         |&nbsp;

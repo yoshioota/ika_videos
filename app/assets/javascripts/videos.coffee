@@ -4,20 +4,20 @@ $(document).on 'ajax:success', '.videos__index .destroy-btn a[data-remote]', (e)
 
 $(document).on 'click', '.date_on-today-btn', (e)->
   date = new Date()
-  $('#date_year').val(date.getFullYear())
-  $('#date_month').val(date.getMonth() + 1)
-  $('#date_day').val(date.getDate())
-  $('#date_day').change()
+  $('#date_on_year').val(date.getFullYear())
+  $('#date_on_month').val(date.getMonth() + 1)
+  $('#date_on_day').val(date.getDate())
+  $('#date_on_day').change()
 
 $(document).on 'click', '.date_on-yesterday-btn', (e)->
   date = new Date()
   date.setDate(new Date().getDate() - 1)
-  $('#date_year').val(date.getFullYear())
-  $('#date_month').val(date.getMonth() + 1)
-  $('#date_day').val(date.getDate())
-  $('#date_day').change()
+  $('#date_on_year').val(date.getFullYear())
+  $('#date_on_month').val(date.getMonth() + 1)
+  $('#date_on_day').val(date.getDate())
+  $('#date_on_day').change()
 
 $(document).on 'click', '.date_on-clear-btn', (e)->
   date = new Date()
-  $('#date_year, #date_month, #date_day').val('')
-  $('#date_day').change()
+  $('#date_on_year, #date_on_month, #date_on_day').val('')
+  $('#date_on_day').change()

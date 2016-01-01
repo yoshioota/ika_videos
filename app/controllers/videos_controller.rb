@@ -41,7 +41,7 @@ class VideosController < ApplicationController
   end
 
   def search_videos
-    @date_on = Date.parse(params[:date_on]) rescue nil
+    @date_on = TimeUtil.param_date_to_date(params[:date_on])
     videos = Video
     videos = videos.includes(:capture)
     videos = videos.where(started_at: @date_on.to_time.all_day) if @date_on
@@ -49,7 +49,7 @@ class VideosController < ApplicationController
     videos = videos.where(game_rule: params[:game_rule]) if params[:game_rule].present?
     videos = videos.where(game_stage: params[:game_stage]) if params[:game_stage].present?
     videos = videos.where(game_result: params[:game_result]) if params[:game_result].present?
-    videos.order(started_at: :desc)
+    videos.order(started_at: :desc).page(params[:page]).per(200)
   end
 
   def set_video
