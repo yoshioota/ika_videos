@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+ruby '2.2.4' # 2.3.0 の場合 sidekiq-limit_fetch-3.0.1 がワーニング出るので2.2.4にする
+
 gem 'rails', '4.2.5'
 gem 'mysql2'
 gem 'sass-rails', '~> 5.0'
