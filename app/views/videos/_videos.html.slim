@@ -15,8 +15,7 @@ table.table
       th.text-center Kills
       th.text-center Deaths
       th Result
-      th Local
-      th Youtube
+      th Video
       th
       th
 
@@ -47,9 +46,9 @@ table.table
         td
           = video.game_result.try(:text)
         td
-          = link_to_if video.exist_local?, 'Local', open_video_path(video), method: :post, remote: true
-        td
-          = link_to_if video.youtube_id, video.youtube_id, "https://www.youtube.com/watch?v=#{video.youtube_id}", target: :_blank
+          = link_to_if video.exist_local?, 'Local', open_video_path(video), method: :post, remote: true, class: 'btn btn-default btn-sm'
+          |&nbsp;
+          = link_to_if video.youtube_id, 'YouTube', "https://www.youtube.com/watch?v=#{video.youtube_id}", target: :_blank, class: 'btn btn-default btn-sm'
         td
           = link_to_if video.uploadable? && video.youtube_id.nil?, 'Upload', upload_youtube_video_path(video), method: :post, remote: true
         td
