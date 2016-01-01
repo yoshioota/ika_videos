@@ -22,6 +22,7 @@ module Splatoon
       'negitoro': {'ja': 'ネギトロ炭鉱', 'en': 'Bulefin Depot'},
       'shionome': {'ja': 'シオノメ油田', 'en': 'Saltspray Rig'},
       'tachiuo':  {'ja': 'タチウオパーキング', 'en': 'Moray Towers'},
+      'syotturu':  {'ja': 'ショッツル鉱山', 'en': 'Piranha Pit'},
   }.with_indifferent_access
 
   RESULTS = {

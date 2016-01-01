@@ -18,6 +18,7 @@ stage: &stages
   negitoro: ネギトロ炭鉱
   shionome: シオノメ油田
   tachiuo:  タチウオパーキング
+  syotturu: ショッツル鉱山
 results: &results
   win:      勝利
   lose:     敗北
