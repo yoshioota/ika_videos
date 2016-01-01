@@ -13,21 +13,21 @@ class Splatoon::AnalyzeGameResult
 
   def initialize(image)
     @tgt_gray_image = image.resize(NEW_SIZE)
-    @tgt_otsu_image = OpenCvUtil.to_otsu(@tgt_gray_image)
+    @tgt_bw_image = @tgt_gray_image.threshold(245, 255, CV_THRESH_BINARY).resize(NEW_SIZE)
   end
 
   def game_result
     game_results_hash = {}
 
-    @tgt_otsu_image.set_roi(target_game_result_roi)
+    @tgt_bw_image.set_roi(target_game_result_roi)
 
     get_game_result_templates.each do |game_result_name, game_result_template|
-      hash = min_max_loc_to_hash(@tgt_otsu_image.match_template(game_result_template, CV_TM_SQDIFF).min_max_loc)
+      hash = min_max_loc_to_hash(@tgt_bw_image.match_template(game_result_template, CV_TM_SQDIFF).min_max_loc)
       hash[:game_result] = game_result_name
       game_results_hash[hash[:min_score]] = hash
     end
 
-    @tgt_otsu_image.reset_roi
+    @tgt_bw_image.reset_roi
 
     game_results_hash.values.sort_by{|h| h[:min_score]}.first
   end
