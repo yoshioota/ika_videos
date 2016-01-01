@@ -1,5 +1,5 @@
 class Settings < Settingslogic
-  source "#{Rails.root}/config/application.yml"
+  source "#{Rails.root}/config/settingslogic.yml"
   namespace Rails.env
 
   # MEMO: application.yml内で参照するとstack level too deep errorになるのでこちらへ移動...
