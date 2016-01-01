@@ -1,1 +1,6 @@
-= image_tag img_capture_frame_path(@capture, params[:id], scale: params[:scale])
+div
+  = link_to 'scale-1', capture_frame_path(@capture, params[:id], scale: 1), class: bsbtn
+  |&nbsp;
+  = link_to 'scale-8', capture_frame_path(@capture, params[:id], scale: 8), class: bsbtn
+
+= image_tag img_capture_frame_path(@capture, params[:id], scale: @scale)

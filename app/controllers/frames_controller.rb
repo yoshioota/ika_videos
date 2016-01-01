@@ -9,6 +9,10 @@ class FramesController < ApplicationController
     search_frames
   end
 
+  def show
+    @scale = (params[:scale].presence || 1).to_i
+  end
+
   def img
     scale = (params[:scale].presence || Settings.default_scale).to_i
     img_path = @capture.get_or_create_frame_image_file_path_total_frame(params[:id].to_i, scale)
