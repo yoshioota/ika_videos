@@ -6,7 +6,7 @@ class CreateMarkersWorker
   def initialize
     @concurrency_scale = 10_000
     @gc_timing = 10
-    @use_parallel = false
+    @use_parallel = Settings.use_parallel
   end
 
   def perform(capture_id)

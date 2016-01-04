@@ -1,7 +1,10 @@
 defaults: &defaults
   capture_path: <%= File.expand_path('~/Movies/Game Capture HD Library/') %>
   output_path: <%= File.expand_path('~/ika/') %>
+
+  use_parallel: true
   concurrency: <%= c = Parallel.processor_count - 1; c < 1 ? 1 : c %>
+
   default_scale: 8
   create_youtube_playlist_dates: 3
 
