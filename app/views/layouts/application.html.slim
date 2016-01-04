@@ -34,6 +34,8 @@ html
             li*{class: (%r|/game_results| === request.path ? 'active' : '')}
               = link_to game_results_path do
                 |Results
+            li
+              = link_to 'Sidekiq', '/sidekiq', target: :_blank
           ul.nav.navbar-right
             li
               = link_to edit_credential_path do
