@@ -7,7 +7,7 @@ class PlaylistsController < ApplicationController
   end
 
   def show
-    @capture_ids = @playlist.videos.includes(:capture).pluck(:capture_id).uniq
+    @capture_ids = @playlist.videos.includes(:capture).pluck(:capture_id).uniq.compact
     search_playlist_items
     if request.xhr?
       render action: 'playlist_items', format: :js
