@@ -27,6 +27,7 @@ class Capture < ActiveRecord::Base
   end
 
   def get_or_create_frame_image_file_path_total_frame(total_frame, scale = Settings.default_scale)
+    fail total_frame.to_s if total_frame >= self.total_frames
     path = get_frame_image_file_path_total_frame(total_frame, scale)
     return path if File.file?(path)
     CreateFrameFilesWorker.new(self).make_frame(total_frame, scale)
