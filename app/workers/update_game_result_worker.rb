@@ -6,7 +6,7 @@ class UpdateGameResultWorker
     summarize_total('total')
     summarize_span('daily', Date.today.to_time.all_day, Date.today)
     summarize_span('daily', Date.yesterday.to_time.all_day, Date.yesterday)
-    summarize_span('weekly', Date.today.to_time.all_week, Date.today.beginning_of_week(:sunday))
+    summarize_span('weekly', Date.today.to_time.all_week(:sunday), Date.today.beginning_of_week(:sunday))
   end
 
   def summarize_total(span_type)
