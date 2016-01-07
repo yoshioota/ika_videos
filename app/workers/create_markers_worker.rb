@@ -4,7 +4,7 @@ class CreateMarkersWorker
   sidekiq_options queue: :create_markers
 
   def initialize
-    @concurrency_scale = 1_000
+    @concurrency_scale = 100
     @gc_timing = 1
     @use_parallel = Settings.use_parallel
   end
