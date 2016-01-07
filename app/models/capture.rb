@@ -1,6 +1,6 @@
 class Capture < ActiveRecord::Base
   has_many :markers, dependent: :destroy
-  has_many :videos#, dependent: :destroy
+  has_many :videos, dependent: :nullify
 
   scope :visible, -> { where(visible: true) }
 
