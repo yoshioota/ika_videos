@@ -116,6 +116,7 @@ class CreateVideosWorker
     (10..19).each do |sec|
       (0..59).step(18) do |frame|
         total_frame = video.end_frame + ((sec * 60) + frame)
+        next if total_frame >= capture.total_frames
         worker.make_frame(total_frame, 1)
         image_path = capture.get_or_create_frame_image_file_path_total_frame(total_frame, 1)
         image = OpenCV::IplImage.load(image_path, OpenCV::CV_LOAD_IMAGE_GRAYSCALE)
