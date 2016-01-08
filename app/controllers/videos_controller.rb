@@ -4,10 +4,6 @@ class VideosController < ApplicationController
 
   def index
     @videos = search_videos
-  end
-
-  def search
-    @videos = search_videos
     if params[:open_all]
       open_all @videos
     end
@@ -41,7 +37,7 @@ class VideosController < ApplicationController
   end
 
   def search_videos
-    @date_on = TimeUtil.param_date_to_date(params[:date_on])
+    @date_on = TimeUtil.param_date_to_date(params[:date_on]) if TimeUtil.param_date_present?(params[:date_on])
     videos = Video
     videos = videos.includes(:capture)
     videos = videos.where(started_at: @date_on.to_time.all_day) if @date_on

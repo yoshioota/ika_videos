@@ -47,9 +47,6 @@ Rails.application.routes.draw do
   end
 
   resources :videos, only: %w(index destroy) do
-    collection do
-      get :search
-    end
     member do
       post :open
       post :upload_youtube

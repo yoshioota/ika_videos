@@ -1,0 +1,2 @@
+$('.videos').html("<%= j render('videos/videos', videos: @videos)%>")
+$('.paginator').html("<%= j paginate @videos, theme: 'twitter-bootstrap-3', remote: true %>")

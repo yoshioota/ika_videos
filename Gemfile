@@ -38,6 +38,7 @@ gem 'bootstrap-sass'
 gem 'bootstrap_form'
 gem 'font-awesome-rails'
 gem 'kaminari'
+gem 'bootstrap-kaminari-views'
 
 gem 'toastr-rails'
 gem 'uri-js-rails'

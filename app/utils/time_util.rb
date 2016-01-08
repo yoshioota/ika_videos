@@ -69,4 +69,9 @@ class TimeUtil
     return unless param_date
     Date.parse(param_date.values.join('-'))
   end
+
+  def self.param_date_present?(param_date)
+    return nil if param_date.nil?
+    param_date.values.all?(&:present?)
+  end
 end
