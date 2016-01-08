@@ -43,7 +43,10 @@ class CreateVideosWorker
 
     (1..5).each do |sec|
       (0..59).step(12) do |frame|
-        image_path = capture.get_or_create_frame_image_file_path_total_frame(video.start_frame + ((sec * 60) + frame), 1)
+        total_frame = video.start_frame + ((sec * 60) + frame)
+        next if total_frame >= capture.total_frames
+
+        image_path = capture.get_or_create_frame_image_file_path_total_frame(total_frame, 1)
         raise image_path unless File.file?(image_path)
         image = OpenCV::IplImage.load(image_path, OpenCV::CV_LOAD_IMAGE_GRAYSCALE)
         af = Splatoon::AnalyzeRuleAndStage.new(image)
@@ -85,7 +88,10 @@ class CreateVideosWorker
 
     (7..10).each do |sec|
       (0..59).step(3) do |frame|
-        image_path = capture.get_or_create_frame_image_file_path_total_frame(video.end_frame + ((sec * 60) + frame), 1)
+        total_frame = video.end_frame + ((sec * 60) + frame)
+        next if total_frame >= capture.total_frames
+
+        image_path = capture.get_or_create_frame_image_file_path_total_frame(total_frame, 1)
         image = OpenCV::IplImage.load(image_path, OpenCV::CV_LOAD_IMAGE_GRAYSCALE)
         af = Splatoon::AnalyzeGameResult.new(image)
         if game_result = af.game_result
@@ -117,6 +123,7 @@ class CreateVideosWorker
       (0..59).step(18) do |frame|
         total_frame = video.end_frame + ((sec * 60) + frame)
         next if total_frame >= capture.total_frames
+
         worker.make_frame(total_frame, 1)
         image_path = capture.get_or_create_frame_image_file_path_total_frame(total_frame, 1)
         image = OpenCV::IplImage.load(image_path, OpenCV::CV_LOAD_IMAGE_GRAYSCALE)
