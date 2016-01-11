@@ -13,13 +13,14 @@ defaults: &defaults
   default_scale: 8
   create_youtube_playlist_dates: 3
 
-  # Elgatoのディレクトリも消すかどうか
+  # Elgatoのキャプチャファイルも消すかどうか
   # ただしElgatoアプリが起動中の場合に削除すると,Elgatoのアプリを終了した際jsonが作られてしまう。
   delete_capture_dir: true
 
   # 抽出したビデオファイルを消すか
   delete_video_file: true
 
+  # プレイリスト詳細でのサムネイルを何秒間隔で表示するか。
   playlist_check_seconds: 10
 
   videos_per_page: 100
