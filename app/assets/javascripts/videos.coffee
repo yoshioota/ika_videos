@@ -21,3 +21,7 @@ $(document).on 'click', '.date_on-clear-btn', (e)->
   date = new Date()
   $('#date_on_year, #date_on_month, #date_on_day').val('')
   $('#date_on_day').change()
+
+$(document).on 'ready page:load', (e) ->
+  return unless $('.videos__index')[0]
+  $.get('/videos.js')

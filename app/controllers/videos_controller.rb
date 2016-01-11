@@ -3,9 +3,14 @@ class VideosController < ApplicationController
   before_action :set_video, only: %w(destroy open upload_youtube)
 
   def index
-    @videos = search_videos
-    if params[:open_all]
-      open_all @videos
+    respond_to do |format|
+      format.html
+      format.js {
+        @videos = search_videos
+        if params[:open_all]
+          open_all @videos
+        end
+      }
     end
   end
 
@@ -45,7 +50,7 @@ class VideosController < ApplicationController
     videos = videos.where(game_rule: params[:game_rule]) if params[:game_rule].present?
     videos = videos.where(game_stage: params[:game_stage]) if params[:game_stage].present?
     videos = videos.where(game_result: params[:game_result]) if params[:game_result].present?
-    videos.order(started_at: :desc).page(params[:page]).per(200)
+    videos.order(started_at: :desc).page(params[:page]).per(Settings.videos_per_page)
   end
 
   def set_video

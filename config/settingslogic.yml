@@ -17,6 +17,8 @@ defaults: &defaults
 
   playlist_check_seconds: 10
 
+  videos_per_page: 100
+
 development:
   <<: *defaults
 

@@ -7,6 +7,6 @@ h1 Listing Videos
   = render 'videos/search_form'
 
 .paginator
-  = paginate @videos, theme: 'twitter-bootstrap-3', remote: true
+  = paginate @videos, theme: 'twitter-bootstrap-3', remote: true if @videos
 .videos
-  = render 'videos/videos', videos: @videos
+  = render 'videos/videos', videos: @videos if @videos
