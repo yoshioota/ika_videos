@@ -1,3 +1,30 @@
+# == Schema Information
+#
+# Table name: captures
+#
+#  id                              :integer          not null, primary key
+#  title                           :string(255)
+#  total_frames                    :integer
+#  duration                        :string(255)
+#  full_path                       :string(255)
+#  exist                           :boolean
+#  started_at                      :datetime
+#  ended_at                        :datetime
+#  compute_total_frames_started_at :datetime
+#  compute_total_frames_ended_at   :datetime
+#  create_thumbnails_started_at    :datetime
+#  create_thumbnails_ended_at      :datetime
+#  create_markers_started_at       :datetime
+#  create_markers_ended_at         :datetime
+#  analyze_videos_started_at       :datetime
+#  analyze_videos_ended_at         :datetime
+#  markers_count                   :integer          default(0)
+#  videos_count                    :integer          default(0)
+#  visible                         :boolean          default(TRUE)
+#  created_at                      :datetime         not null
+#  updated_at                      :datetime         not null
+#
+
 class Capture < ActiveRecord::Base
   has_many :markers, dependent: :destroy
   has_many :videos, dependent: :nullify

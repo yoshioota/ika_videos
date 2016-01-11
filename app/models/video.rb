@@ -1,3 +1,28 @@
+# == Schema Information
+#
+# Table name: videos
+#
+#  id           :integer          not null, primary key
+#  capture_id   :integer
+#  total_frames :integer
+#  start_frame  :integer
+#  end_frame    :integer
+#  youtube_id   :string(255)
+#  started_at   :datetime
+#  ended_at     :datetime
+#  file_name    :string(255)
+#  game_rule    :string(255)
+#  game_stage   :string(255)
+#  game_result  :string(255)
+#  kills        :integer
+#  deaths       :integer
+#  rank_str     :string(255)
+#  rank_no      :integer
+#  rank_points  :integer
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#
+
 class Video < ActiveRecord::Base
   extend Enumerize
 
